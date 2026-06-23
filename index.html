@@ -100,6 +100,25 @@
     .toast.show{animation:toastPop .35s cubic-bezier(.2,.9,.2,1.2) both}@keyframes toastPop{0%{transform:translateX(-50%) translateY(22px) scale(.92)}100%{transform:translateX(-50%) translateY(0) scale(1)}}
     @media (prefers-reduced-motion: reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 
+
+    .share-box{display:grid;gap:9px;padding:14px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);animation:liveBorder 4s ease-in-out infinite}
+    .share-box p{color:rgba(255,255,255,.68);font-size:13px;line-height:1.45}
+    .maps-button{display:none;text-decoration:none;text-align:center}
+    .maps-button.show{display:block}
+    .lastday-list,.pending-list,.critical-list{display:grid;gap:10px}
+    .lastday-card,.pending-card,.critical-card{padding:14px;border-radius:24px;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);box-shadow:0 16px 34px rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.55);transition:transform .22s ease,box-shadow .22s ease}
+    .lastday-card:hover,.pending-card:hover,.critical-card:hover{transform:translateY(-4px);box-shadow:0 26px 54px rgba(0,0,0,.22)}
+    .critical-card{border-left:7px solid var(--pink)}
+    .pending-card{border-left:7px solid var(--aqua)}
+    .lastday-card{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border-left:7px solid var(--sun)}
+    .lastday-card input{width:22px;height:22px;accent-color:#20c76a}
+    .lastday-card.done{opacity:.68;filter:saturate(.82)}
+    .lastday-card.done .lastday-title{text-decoration:line-through}
+    .lastday-title{font-weight:950}
+    .lastday-meta,.critical-card small,.pending-card small{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:850;line-height:1.45}
+    .copy-success{font-size:12px;color:#d9ffe5;font-weight:900;display:none}
+    .copy-success.show{display:block;animation:cardPop .28s ease both}
+
     @media(max-width:1060px){.hero,.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:780px){.participants,.need-panel{grid-template-columns:1fr}.board-controls,.board-controls-2,.check-controls,.expense-form,.expense-summary{grid-template-columns:1fr}.section-head{flex-direction:column}.pill{white-space:normal}.shared-add,.expense-add,.add-note,.loc-actions{grid-template-columns:1fr}.btn{width:100%}}@media(max-width:560px){.wrap{padding:15px 13px 38px}.hero-main,.hero-side,.section{border-radius:26px;padding:15px}h1{letter-spacing:-2px}.hero-desc{font-size:16px}.stats{gap:10px}.stat{padding:14px;border-radius:22px}.side-big{font-size:29px}.chip{font-size:13px;padding:10px 12px}.toast{max-width:92%;text-align:center}}
   </style>
 </head>
@@ -133,6 +152,7 @@
           <input id="mapsInput" placeholder="Google Maps linki" />
           <input id="meetingInput" placeholder="Buluşma noktası / kapı / otopark" />
           <div class="loc-actions"><input id="feeInput" placeholder="Giriş / otopark ücreti" /><button class="btn orange" onclick="saveLocation()">Kaydet</button></div>
+          <a id="mapsButton" class="btn primary maps-button" target="_blank" rel="noopener">📍 Haritada Aç</a>
         </div>
       </div>
     </aside>
@@ -196,6 +216,41 @@
       </div>
 
       <div class="section glass">
+        <div class="section-head">
+          <div><div class="section-title">Kritik Eksikler</div><div class="section-sub">Piknik günü unutulmaması gereken önemli eksikler.</div></div>
+          <div class="pill" id="criticalCount">0 kritik</div>
+        </div>
+        <div class="critical-list" id="criticalList"></div>
+      </div>
+
+      <div class="section glass">
+        <div class="section-head">
+          <div><div class="section-title">Henüz Yazmayanlar</div><div class="section-sub">Kendi kartına hiç not eklemeyen kişi/çiftler.</div></div>
+          <div class="pill" id="pendingCount">0 kişi</div>
+        </div>
+        <div class="pending-list" id="pendingList"></div>
+      </div>
+
+      <div class="section glass">
+        <div class="section-head">
+          <div><div class="section-title">Son Gün Kontrol</div><div class="section-sub">Piknikten önce son hızlı kontrol listesi.</div></div>
+          <div class="pill" id="lastDayCount">0/0</div>
+        </div>
+        <div class="lastday-list" id="lastDayList"></div>
+      </div>
+
+      <div class="section glass">
+        <div class="section-head">
+          <div><div class="section-title">WhatsApp Paylaş</div><div class="section-sub">Gruba göndermek için mesajı tek tıkla kopyala.</div></div>
+        </div>
+        <div class="share-box">
+          <p>Hazır mesaj link, tarih, saat, yer ve kısa açıklamayla kopyalanır.</p>
+          <button class="btn primary" onclick="copyWhatsappMessage()">WhatsApp Mesajını Kopyala</button>
+          <span class="copy-success" id="copySuccess">Mesaj kopyalandı.</span>
+        </div>
+      </div>
+
+      <div class="section glass">
         <div class="section-head"><div><div class="section-title">Ortak Notlar</div><div class="section-sub">Piknik notlarını siz ekleyip pasife alabilirsiniz.</div></div></div>
         <div class="shared-add"><textarea id="sharedNoteInput" placeholder="Ortak not ekle..."></textarea><button class="btn primary" onclick="addSharedNote()">Not Ekle</button></div>
         <div class="shared-list" id="sharedNotes"></div>
@@ -247,7 +302,7 @@ const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const participantOrder=["Burak & Şevval","Görkem & Asiye","Orçun & Burcu","Radiha & Berkay","Umut & Şevin","Muhammet","Hüseyin","Tuğba"];
 const starterParticipants=[{name:"Burak & Şevval",type:"couple",items_text:""},{name:"Görkem & Asiye",type:"couple",items_text:""},{name:"Orçun & Burcu",type:"couple",items_text:""},{name:"Radiha & Berkay",type:"couple",items_text:""},{name:"Umut & Şevin",type:"couple",items_text:""},{name:"Muhammet",type:"single",items_text:""},{name:"Hüseyin",type:"single",items_text:""},{name:"Tuğba",type:"single",items_text:""}];
-let participants=[],pNotes=[],items=[],shared=[],expenses=[],activities=[],settings={};
+let participants=[],pNotes=[],items=[],shared=[],expenses=[],activities=[],lastChecks=[],settings={};
 let actorResolve=null;
 window.addEventListener("load",async()=>{setTimeout(()=>document.getElementById("intro").classList.add("hide"),1400);await ensureStarterData();await loadAll();setupRealtime()});
 function toast(t="Kaydedildi"){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1700)}
@@ -304,7 +359,7 @@ async function ensureStarterData(){
     await client.from("picnic_checklist").insert(s.map(([title,category,amount,unit,details,importance])=>({title,category,amount,unit,details,importance,status:"Eksik",responsible:"",is_active:true})));
   }
 }
-async function loadAll(){await Promise.all([loadSettings(),loadParticipants(),loadPNotes(),loadItems(),loadShared(),loadExpenses(),loadActivities()]);renderAll()}
+async function loadAll(){await Promise.all([loadSettings(),loadParticipants(),loadPNotes(),loadItems(),loadShared(),loadExpenses(),loadActivities(),loadLastChecks()]);renderAll()}
 async function loadSettings(){const {data}=await client.from("picnic_settings").select("*");settings={};(data||[]).forEach(x=>settings[x.key]=x.value)}
 async function loadParticipants(){const {data}=await client.from("picnic_participants").select("*");participants=(data||[]).sort((a,b)=>{const ai=participantOrder.indexOf(a.name),bi=participantOrder.indexOf(b.name);return(ai<0?999:ai)-(bi<0?999:bi)})}
 async function loadPNotes(){const {data}=await client.from("picnic_participant_notes").select("*").order("created_at",{ascending:true});pNotes=(data||[]).filter(x=>x.is_active!==false)}
@@ -312,22 +367,69 @@ async function loadItems(){const {data}=await client.from("picnic_checklist").se
 async function loadShared(){const {data}=await client.from("picnic_shared_notes").select("*").order("created_at",{ascending:false});shared=(data||[]).filter(x=>x.is_active!==false)}
 async function loadExpenses(){const {data}=await client.from("picnic_expenses").select("*").order("created_at",{ascending:false});expenses=(data||[]).filter(x=>x.is_active!==false)}
 async function loadActivities(){const {data,error}=await client.from("picnic_activity_log").select("*").order("created_at",{ascending:false}).limit(18);if(error){activities=[];return}activities=data||[]}
-function renderAll(){renderSettings();renderParticipants();renderItems();renderMissing();renderShared();renderExpenses();renderActivities();renderStatus()}
-function renderSettings(){const loc=settings.location||"Henüz belli değil";document.getElementById("locationChip").textContent=loc;document.getElementById("locationStat").textContent=loc;document.getElementById("locationInput").value=loc==="Henüz belli değil"?"":loc;document.getElementById("mapsInput").value=settings.maps_url||"";document.getElementById("meetingInput").value=settings.meeting_point||"";document.getElementById("feeInput").value=settings.entrance_fee||""}
+async function loadLastChecks(){const {data,error}=await client.from("picnic_last_day_checks").select("*").order("created_at",{ascending:true});if(error){lastChecks=[];return}lastChecks=(data||[]).filter(x=>x.is_active!==false)}
+function renderAll(){renderSettings();renderParticipants();renderItems();renderMissing();renderCritical();renderPending();renderLastDay();renderShared();renderExpenses();renderActivities();renderStatus()}
+function renderSettings(){const loc=settings.location||"Henüz belli değil";document.getElementById("locationChip").textContent=loc;document.getElementById("locationStat").textContent=loc;document.getElementById("locationInput").value=loc==="Henüz belli değil"?"":loc;document.getElementById("mapsInput").value=settings.maps_url||"";document.getElementById("meetingInput").value=settings.meeting_point||"";document.getElementById("feeInput").value=settings.entrance_fee||"";
+const mb=document.getElementById("mapsButton");
+if(settings.maps_url){mb.href=settings.maps_url;mb.classList.add("show")}else{mb.removeAttribute("href");mb.classList.remove("show")}
+}
 function renderStatus(){const filled=new Set(pNotes.map(n=>n.participant_name)).size;const miss=items.filter(i=>i.is_active!==false&&i.status==="Eksik").length;document.getElementById("quickStatus").textContent=`${filled}/${participants.length} kişi • ${miss} eksik`;document.getElementById("missingStat").textContent=miss}
 function renderParticipants(){const by={};pNotes.forEach(n=>(by[n.participant_name]||=[]).push(n));const filled=participants.filter(p=>(by[p.name]||[]).length).length;document.getElementById("participantSummary").textContent=`${filled}/${participants.length} kişi veya çift not girdi`;document.getElementById("participants").innerHTML=participants.map(p=>{const notes=by[p.name]||[];return `<div class="person-card"><div class="person-top"><div class="person-name-wrap"><div class="avatar">${esc(initials(p.name))}</div><div><div class="person-name">${esc(p.name)}</div><div class="person-type">${p.type==="couple"?"Çift":"Tek katılımcı"}</div></div></div><div class="meta ${notes.length?"done":""}">${notes.length?notes.length+" not":"Bekliyor"}</div></div><div class="notes-list">${notes.length?notes.map(n=>`<div class="note-item"><div><p>${esc(n.note_text)}</p>${n.actor?`<span class="actor-mini">✍️ ${esc(n.actor)}</span>`:""}</div><button class="btn ghost tiny" onclick="archivePNote('${n.id}')">Pasif</button></div>`).join(""):`<div class="empty-card">Henüz bir şey yazılmadı.</div>`}</div><div class="add-note"><textarea id="pn-${p.id}" placeholder="${notes.length?"Yeni not ekle...":"Ne getireceksiniz?"}"></textarea><button class="btn primary" onclick="addPNote('${esc(p.name)}','${p.id}')">Ekle</button></div></div>`}).join("")}
-async function addPNote(name,id){const el=document.getElementById(`pn-${id}`);const text=el.value.trim();if(!text)return toast("Not yazmalısın");const actor=await askActor("Notu kim ekliyor?",`${name} için not eklenecek.`);if(!actor)return;const {error}=await client.from("picnic_participant_notes").insert({participant_name:name,note_text:text,actor,is_active:true});if(error)return toast("Not eklenemedi");await logActivity(actor,"Kişi notu ekledi",`${name}: ${text}`,"Kim Ne Getirecek");el.value="";toast("Not eklendi");await Promise.all([loadPNotes(),loadActivities()]);renderParticipants();renderActivities();renderStatus()}
-async function archivePNote(id){const note=pNotes.find(x=>x.id===id);const actor=await askActor("Notu kim pasife alıyor?","Bu işlem son değişikliklere eklenecek.");if(!actor)return;const {error}=await client.from("picnic_participant_notes").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");await logActivity(actor,"Kişi notunu pasife aldı",`${note?.participant_name||""}: ${note?.note_text||""}`,"Kim Ne Getirecek");toast("Pasife alındı");await Promise.all([loadPNotes(),loadActivities()]);renderParticipants();renderActivities();renderStatus()}
+async function addPNote(name,id){const el=document.getElementById(`pn-${id}`);const text=el.value.trim();if(!text)return toast("Not yazmalısın");const actor=await askActor("Notu kim ekliyor?",`${name} için not eklenecek.`);if(!actor)return;const {error}=await client.from("picnic_participant_notes").insert({participant_name:name,note_text:text,actor,is_active:true});if(error)return toast("Not eklenemedi");await logActivity(actor,"Kişi notu ekledi",`${name}: ${text}`,"Kim Ne Getirecek");el.value="";toast("Not eklendi");await Promise.all([loadPNotes(),loadActivities()]);renderParticipants();renderPending();renderActivities();renderStatus()}
+async function archivePNote(id){const note=pNotes.find(x=>x.id===id);const actor=await askActor("Notu kim pasife alıyor?","Bu işlem son değişikliklere eklenecek.");if(!actor)return;const {error}=await client.from("picnic_participant_notes").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");await logActivity(actor,"Kişi notunu pasife aldı",`${note?.participant_name||""}: ${note?.note_text||""}`,"Kim Ne Getirecek");toast("Pasife alındı");await Promise.all([loadPNotes(),loadActivities()]);renderParticipants();renderPending();renderActivities();renderStatus()}
 function sClass(s){if(s==="Alındı")return"alindi";if(s==="Alınacak")return"alinacak";return"eksik"}
 function renderItems(){const active=items.filter(i=>i.is_active!==false),arch=items.filter(i=>i.is_active===false);const done=active.filter(i=>i.status==="Alındı").length,miss=active.filter(i=>i.status==="Eksik").length;document.getElementById("checkSummary").textContent=`${active.length} aktif • ${done} alındı • ${miss} eksik`;const cats=[...new Set(active.map(i=>i.category||"Genel"))];document.getElementById("checklist").innerHTML=active.length?cats.map(cat=>`<div class="category-title"><span class="cat-dot"></span>${esc(cat)}</div>`+active.filter(i=>(i.category||"Genel")===cat).map(renderItem).join("")).join(""):`<div class="empty">Aktif madde yok.</div>`;document.getElementById("archiveList").innerHTML=arch.length?arch.map(i=>`<div class="archived-card"><span>${esc(i.title)}</span><button class="btn primary tiny" onclick="restoreItem('${i.id}')">Geri Al</button></div>`).join(""):`<div class="empty">Pasife alınan madde yok.</div>`}
 function renderItem(i){const opts=[`<option value="">Sorumlu yok</option>`,...participants.map(p=>`<option value="${esc(p.name)}" ${p.name===i.responsible?"selected":""}>${esc(p.name)}</option>`)].join("");return `<div class="check-card ${i.importance==="Kritik"?"critical":""}"><div class="check-top"><div><div class="check-name">${esc(i.title)}</div><div class="check-sub"><span class="tag">${esc(i.category||"Genel")}</span>${i.amount?`<span class="tag">${esc(i.amount)} ${esc(i.unit||"")}</span>`:""}<span class="tag">${esc(i.importance||"Normal")}</span><span class="tag">${i.responsible?esc(i.responsible):"Sorumlu yok"}</span></div>${i.updated_by?`<span class="actor-mini">Son düzenleyen: ${esc(i.updated_by)}</span>`:""}${i.details?`<div class="check-detail">${esc(i.details)}</div>`:""}</div><div class="status ${sClass(i.status)}">${esc(i.status)}</div></div><div class="check-controls"><select onchange="updateItem('${i.id}','status',this.value)"><option value="Eksik" ${i.status==="Eksik"?"selected":""}>Eksik</option><option value="Alınacak" ${i.status==="Alınacak"?"selected":""}>Alınacak</option><option value="Alındı" ${i.status==="Alındı"?"selected":""}>Alındı</option></select><select onchange="updateItem('${i.id}','responsible',this.value)">${opts}</select><button class="btn ghost" onclick="editItem('${i.id}')">Detay</button><button class="btn danger" onclick="archiveItem('${i.id}')">Pasif</button></div></div>`}
-async function addChecklistItem(){const title=document.getElementById("newTitle").value.trim();if(!title)return toast("Madde adı yazmalısın");const actor=await askActor("Alınacak maddeyi kim ekliyor?",`${title} listeye eklenecek.`);if(!actor)return;const row={title,category:document.getElementById("newCategory").value,amount:document.getElementById("newAmount").value.trim(),unit:document.getElementById("newUnit").value,details:document.getElementById("newDetails").value.trim(),importance:document.getElementById("newImportance").value,status:"Eksik",responsible:"",created_by:actor,updated_by:actor,is_active:true};const {error}=await client.from("picnic_checklist").insert(row);if(error)return toast("Madde eklenemedi");await logActivity(actor,"Alınacak madde ekledi",`${row.title} • ${row.amount||""} ${row.unit||""}`,"Alınacaklar");["newTitle","newAmount","newDetails"].forEach(id=>document.getElementById(id).value="");toast("Madde eklendi");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderActivities();renderStatus()}
-async function updateItem(id,field,value){const item=items.find(x=>x.id===id);const actor=await askActor("Bu güncellemeyi kim yapıyor?",`${item?.title||"Madde"} güncellenecek.`);if(!actor){await loadItems();renderItems();return}const {error}=await client.from("picnic_checklist").update({[field]:value,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Güncellenemedi");await logActivity(actor,"Alınacak madde güncelledi",`${item?.title||""} • ${field}: ${value}`,"Alınacaklar");toast("Güncellendi");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderActivities();renderStatus()}
-async function editItem(id){const i=items.find(x=>x.id===id);if(!i)return;const actor=await askActor("Detayı kim düzenliyor?",`${i.title} detayları değişecek.`);if(!actor)return;const amount=prompt("Miktar:",i.amount||"");if(amount===null)return;const unit=prompt("Birim:",i.unit||"");if(unit===null)return;const details=prompt("Detay:",i.details||"");if(details===null)return;const {error}=await client.from("picnic_checklist").update({amount,unit,details,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Detay kaydedilemedi");await logActivity(actor,"Madde detayı düzenledi",`${i.title} • ${amount} ${unit} • ${details}`,"Alınacaklar");toast("Detay güncellendi");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderActivities()}
-async function archiveItem(id){const item=items.find(x=>x.id===id);const actor=await askActor("Maddeyi kim pasife alıyor?","Bu madde silinmeyecek, pasife alınacak.");if(!actor)return;const {error}=await client.from("picnic_checklist").update({is_active:false,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");await logActivity(actor,"Maddeyi pasife aldı",item?.title||"","Alınacaklar");toast("Pasife alındı");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderActivities();renderStatus()}
-async function restoreItem(id){const item=items.find(x=>x.id===id);const actor=await askActor("Maddeyi kim geri alıyor?","Pasiften aktif listeye alınacak.");if(!actor)return;const {error}=await client.from("picnic_checklist").update({is_active:true,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Geri alınamadı");await logActivity(actor,"Maddeyi geri aldı",item?.title||"","Alınacaklar");toast("Geri alındı");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderActivities();renderStatus()}
+async function addChecklistItem(){const title=document.getElementById("newTitle").value.trim();if(!title)return toast("Madde adı yazmalısın");const actor=await askActor("Alınacak maddeyi kim ekliyor?",`${title} listeye eklenecek.`);if(!actor)return;const row={title,category:document.getElementById("newCategory").value,amount:document.getElementById("newAmount").value.trim(),unit:document.getElementById("newUnit").value,details:document.getElementById("newDetails").value.trim(),importance:document.getElementById("newImportance").value,status:"Eksik",responsible:"",created_by:actor,updated_by:actor,is_active:true};const {error}=await client.from("picnic_checklist").insert(row);if(error)return toast("Madde eklenemedi");await logActivity(actor,"Alınacak madde ekledi",`${row.title} • ${row.amount||""} ${row.unit||""}`,"Alınacaklar");["newTitle","newAmount","newDetails"].forEach(id=>document.getElementById(id).value="");toast("Madde eklendi");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderCritical();renderActivities();renderStatus()}
+async function updateItem(id,field,value){const item=items.find(x=>x.id===id);const actor=await askActor("Bu güncellemeyi kim yapıyor?",`${item?.title||"Madde"} güncellenecek.`);if(!actor){await loadItems();renderItems();return}const {error}=await client.from("picnic_checklist").update({[field]:value,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Güncellenemedi");await logActivity(actor,"Alınacak madde güncelledi",`${item?.title||""} • ${field}: ${value}`,"Alınacaklar");toast("Güncellendi");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderCritical();renderActivities();renderStatus()}
+async function editItem(id){const i=items.find(x=>x.id===id);if(!i)return;const actor=await askActor("Detayı kim düzenliyor?",`${i.title} detayları değişecek.`);if(!actor)return;const amount=prompt("Miktar:",i.amount||"");if(amount===null)return;const unit=prompt("Birim:",i.unit||"");if(unit===null)return;const details=prompt("Detay:",i.details||"");if(details===null)return;const {error}=await client.from("picnic_checklist").update({amount,unit,details,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Detay kaydedilemedi");await logActivity(actor,"Madde detayı düzenledi",`${i.title} • ${amount} ${unit} • ${details}`,"Alınacaklar");toast("Detay güncellendi");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderCritical();renderActivities()}
+async function archiveItem(id){const item=items.find(x=>x.id===id);const actor=await askActor("Maddeyi kim pasife alıyor?","Bu madde silinmeyecek, pasife alınacak.");if(!actor)return;const {error}=await client.from("picnic_checklist").update({is_active:false,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");await logActivity(actor,"Maddeyi pasife aldı",item?.title||"","Alınacaklar");toast("Pasife alındı");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderCritical();renderActivities();renderStatus()}
+async function restoreItem(id){const item=items.find(x=>x.id===id);const actor=await askActor("Maddeyi kim geri alıyor?","Pasiften aktif listeye alınacak.");if(!actor)return;const {error}=await client.from("picnic_checklist").update({is_active:true,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Geri alınamadı");await logActivity(actor,"Maddeyi geri aldı",item?.title||"","Alınacaklar");toast("Geri alındı");await Promise.all([loadItems(),loadActivities()]);renderItems();renderMissing();renderCritical();renderActivities();renderStatus()}
 function toggleArchive(){document.getElementById("archiveList").classList.toggle("show")}
 function renderMissing(){const miss=items.filter(i=>i.is_active!==false&&i.status==="Eksik");document.getElementById("missingCount").textContent=`${miss.length} eksik`;document.getElementById("missingList").innerHTML=miss.length?miss.map(i=>`<div class="missing-card"><strong>${esc(i.title)}</strong><small>${esc(i.category||"Genel")} • ${i.amount?esc(i.amount)+" "+esc(i.unit||"")+" • ":""}${i.responsible?esc(i.responsible):"Sorumlu yok"}${i.importance==="Kritik"?" • Kritik":""}</small>${i.details?`<small>${esc(i.details)}</small>`:""}</div>`).join(""):`<div class="empty">Eksik görünen madde yok. Güzel gidiyor.</div>`}
+
+function renderCritical(){
+  const critical=items.filter(i=>i.is_active!==false&&i.status==="Eksik"&&i.importance==="Kritik");
+  document.getElementById("criticalCount").textContent=`${critical.length} kritik`;
+  document.getElementById("criticalList").innerHTML=critical.length?critical.map(i=>`<div class="critical-card"><strong>${esc(i.title)}</strong><small>${esc(i.category||"Genel")} • ${i.amount?esc(i.amount)+" "+esc(i.unit||"")+" • ":""}${i.responsible?esc(i.responsible):"Sorumlu yok"}</small>${i.details?`<small>${esc(i.details)}</small>`:""}</div>`).join(""):`<div class="empty">Kritik eksik yok. Güzel.</div>`;
+}
+function renderPending(){
+  const filled=new Set(pNotes.map(n=>n.participant_name));
+  const pending=participants.filter(p=>!filled.has(p.name));
+  document.getElementById("pendingCount").textContent=`${pending.length} kişi`;
+  document.getElementById("pendingList").innerHTML=pending.length?pending.map(p=>`<div class="pending-card"><strong>${esc(p.name)}</strong><small>Henüz kendi kartına not eklemedi.</small></div>`).join(""):`<div class="empty">Herkes en az bir not eklemiş.</div>`;
+}
+function renderLastDay(){
+  document.getElementById("lastDayCount").textContent=`${lastChecks.filter(x=>x.is_done).length}/${lastChecks.length}`;
+  document.getElementById("lastDayList").innerHTML=lastChecks.length?lastChecks.map(c=>`<label class="lastday-card ${c.is_done?"done":""}"><input type="checkbox" ${c.is_done?"checked":""} onchange="toggleLastCheck('${c.id}',this.checked)" /><div><div class="lastday-title">${esc(c.title)}</div>${c.details?`<span class="lastday-meta">${esc(c.details)}</span>`:""}</div><span class="tag">${c.is_done?"Tamam":"Bekliyor"}</span></label>`).join(""):`<div class="empty">Son gün kontrol maddesi yok.</div>`;
+}
+async function toggleLastCheck(id,done){
+  const item=lastChecks.find(x=>x.id===id);
+  const actor=await askActor("Son gün kontrolünü kim güncelliyor?",`${item?.title||"Kontrol maddesi"} işaretlenecek.`);
+  if(!actor){await loadLastChecks();renderLastDay();return}
+  const {error}=await client.from("picnic_last_day_checks").update({is_done:done,updated_by:actor,updated_at:new Date().toISOString()}).eq("id",id);
+  if(error)return toast("Güncellenemedi");
+  await logActivity(actor,done?"Son gün kontrolü tamamladı":"Son gün kontrolünü geri aldı",item?.title||"","Son Gün Kontrol");
+  toast("Kontrol güncellendi");
+  await Promise.all([loadLastChecks(),loadActivities()]);
+  renderLastDay();renderActivities();
+}
+async function copyWhatsappMessage(){
+  const loc=settings.location||"Henüz belli değil";
+  const maps=settings.maps_url?`\\nHarita: ${settings.maps_url}`:"";
+  const pending=new Set(pNotes.map(n=>n.participant_name));
+  const pendingNames=participants.filter(p=>!pending.has(p.name)).map(p=>p.name).join(", ")||"Yok";
+  const critical=items.filter(i=>i.is_active!==false&&i.status==="Eksik"&&i.importance==="Kritik").map(i=>i.title).join(", ")||"Yok";
+  const msg=`Arkadaşlar Akya Promosyon şirket pikniği hazırlık paneli burada.\\n\\nTarih: 27.06.2026\\nSaat: 09:00\\nYer: ${loc}${maps}\\n\\nHerkes kendi isminin altına ne getireceğini yazsın. Eksikleri ve ortak notları buradan takip ediyoruz.\\n\\nKritik eksikler: ${critical}\\nHenüz yazmayanlar: ${pendingNames}\\n\\nLink:\\nhttps://buraksynthie.github.io/akya-piknik/`;
+  try{await navigator.clipboard.writeText(msg)}catch(e){prompt("Mesajı kopyalayın:",msg)}
+  document.getElementById("copySuccess").classList.add("show");
+  setTimeout(()=>document.getElementById("copySuccess").classList.remove("show"),1800);
+  const actor=localStorage.getItem("akya_actor")||"Sistem";
+  await logActivity(actor,"WhatsApp mesajı kopyaladı","Hazır paylaşım mesajı kopyalandı.","Paylaşım");
+  await loadActivities();renderActivities();
+  toast("WhatsApp mesajı kopyalandı");
+}
+
 function renderShared(){document.getElementById("sharedNotes").innerHTML=shared.length?shared.map(n=>`<div class="shared-note"><div><p>${esc(n.note_text)}</p><small>${n.actor?esc(n.actor)+" ekledi":"Ortak not"}</small></div><button class="btn ghost tiny" onclick="archiveShared('${n.id}')">Pasif</button></div>`).join(""):`<div class="empty">Henüz ortak not yok.</div>`}
 async function addSharedNote(){const el=document.getElementById("sharedNoteInput");const text=el.value.trim();if(!text)return toast("Not yazmalısın");const actor=await askActor("Ortak notu kim ekliyor?","Bu not ortak notlara eklenecek.");if(!actor)return;const {error}=await client.from("picnic_shared_notes").insert({note_text:text,actor,is_active:true});if(error)return toast("Not eklenemedi");await logActivity(actor,"Ortak not ekledi",text,"Ortak Notlar");el.value="";toast("Not eklendi");await Promise.all([loadShared(),loadActivities()]);renderShared();renderActivities()}
 async function archiveShared(id){const note=shared.find(x=>x.id===id);const actor=await askActor("Ortak notu kim pasife alıyor?","Bu işlem son değişikliklerde görünecek.");if(!actor)return;const {error}=await client.from("picnic_shared_notes").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");await logActivity(actor,"Ortak notu pasife aldı",note?.note_text||"","Ortak Notlar");toast("Pasife alındı");await Promise.all([loadShared(),loadActivities()]);renderShared();renderActivities()}
@@ -335,7 +437,7 @@ function renderExpenses(){const total=expenses.reduce((s,e)=>s+(Number(e.amount)
 async function addExpense(){const title=document.getElementById("expenseTitle").value.trim(),amount=Number(String(document.getElementById("expenseAmount").value).replace(",", "."))||0,paid_by=document.getElementById("expensePaidBy").value.trim();if(!title||!amount)return toast("Harcama ve tutar yazmalısın");const actor=await askActor("Harcamayı kim kaydediyor?",`${title} harcaması eklenecek.`);if(!actor)return;const {error}=await client.from("picnic_expenses").insert({title,amount,paid_by,actor,is_active:true});if(error)return toast("Harcama eklenemedi");await logActivity(actor,"Harcama ekledi",`${title} • ${money(amount)} • ${paid_by||"Ödeyen yazılmadı"}`,"Ortak Harcama");["expenseTitle","expenseAmount","expensePaidBy"].forEach(id=>document.getElementById(id).value="");toast("Harcama eklendi");await Promise.all([loadExpenses(),loadActivities()]);renderExpenses();renderActivities()}
 async function archiveExpense(id){const exp=expenses.find(x=>x.id===id);const actor=await askActor("Harcamayı kim pasife alıyor?","Bu işlem son değişikliklerde görünecek.");if(!actor)return;const {error}=await client.from("picnic_expenses").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");await logActivity(actor,"Harcamayı pasife aldı",`${exp?.title||""} • ${money(exp?.amount||0)}`,"Ortak Harcama");toast("Pasife alındı");await Promise.all([loadExpenses(),loadActivities()]);renderExpenses();renderActivities()}
 async function saveLocation(){const actor=await askActor("Konumu kim güncelliyor?","Yer bilgisi değiştirilecek.");if(!actor)return;const rows=[{key:"location",value:document.getElementById("locationInput").value.trim()||"Henüz belli değil"},{key:"maps_url",value:document.getElementById("mapsInput").value.trim()},{key:"meeting_point",value:document.getElementById("meetingInput").value.trim()},{key:"entrance_fee",value:document.getElementById("feeInput").value.trim()}].map(x=>({...x,updated_at:new Date().toISOString()}));const {error}=await client.from("picnic_settings").upsert(rows,{onConflict:"key"});if(error)return toast("Konum kaydedilemedi");await logActivity(actor,"Konum güncelledi",rows.map(r=>`${r.key}: ${r.value}`).join(" • "),"Konum");toast("Konum güncellendi");await Promise.all([loadSettings(),loadActivities()]);renderSettings();renderActivities()}
-function setupRealtime(){client.channel("akya-v4-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).subscribe()}
+function setupRealtime(){client.channel("akya-v6-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderPending();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderCritical();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_last_day_checks"},async()=>{await loadLastChecks();renderLastDay()}).subscribe()}
 </script>
 </body>
 </html>
