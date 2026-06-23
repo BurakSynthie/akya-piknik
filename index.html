@@ -122,18 +122,60 @@
 
     .mobile-tabs,.mobile-menu-sheet{display:none}
     @media(max-width:760px){
-      body{padding-bottom:96px}
-      .wrap{padding-bottom:110px}
-      .mobile-tabs{position:fixed;left:10px;right:10px;bottom:10px;z-index:900;display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:8px;border-radius:28px;background:rgba(5,10,18,.76);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.38)}
-      .mobile-tab{border:0;border-radius:19px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.78);font-weight:900;padding:8px 4px;display:grid;gap:3px;place-items:center;transition:.18s ease}
-      .mobile-tab span:last-child{font-size:10px;line-height:1}.mobile-icon{font-size:18px;line-height:1;display:grid;place-items:center;width:26px;height:26px;border-radius:10px;background:rgba(255,255,255,.08)}
-      .mobile-tab.active,.mobile-tab.menu-open{background:linear-gradient(135deg,var(--neon),var(--aqua));color:#07110d;box-shadow:0 0 24px rgba(108,255,154,.24)}
+      body{padding-bottom:98px}
+      .wrap{padding:15px 13px 112px}
+      .mobile-tabs{
+        position:fixed;left:10px;right:10px;bottom:10px;z-index:900;
+        display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:8px;
+        border-radius:28px;background:rgba(5,10,18,.78);
+        border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);
+        box-shadow:0 20px 60px rgba(0,0,0,.38)
+      }
+      .mobile-tab{
+        border:0;border-radius:19px;background:rgba(255,255,255,.08);
+        color:rgba(255,255,255,.78);font-weight:900;padding:8px 4px;
+        display:grid;gap:3px;place-items:center;transition:.18s ease
+      }
+      .mobile-tab span:last-child{font-size:10px;line-height:1}
+      .mobile-icon{
+        font-size:18px;line-height:1;display:grid;place-items:center;
+        width:26px;height:26px;border-radius:10px;background:rgba(255,255,255,.08)
+      }
+      .mobile-tab.active,.mobile-tab.menu-open{
+        background:linear-gradient(135deg,var(--neon),var(--aqua));
+        color:#07110d;box-shadow:0 0 24px rgba(108,255,154,.24)
+      }
       .mobile-tab.active .mobile-icon,.mobile-tab.menu-open .mobile-icon{background:rgba(7,17,13,.12)}
-      .mobile-section{display:none!important}.mobile-section.mobile-active{display:block!important;animation:mobileTabIn .28s ease both}.hero.mobile-section.mobile-active{display:grid!important}.stats.mobile-section.mobile-active{display:grid!important}.mobile-section.active[data-mobile="home"]{display:block!important}.hero.mobile-section.active[data-mobile="home"]{display:grid!important}.stats.mobile-section.active[data-mobile="home"]{display:grid!important}
-      .layout{display:block}.hero{margin-bottom:12px}.section{margin-bottom:12px}.activity-list{max-height:none}
-      .mobile-menu-sheet{position:fixed;inset:0;z-index:930;pointer-events:none}.mobile-menu-sheet.show{display:block;pointer-events:auto}.mobile-menu-overlay{position:absolute;inset:0;background:rgba(4,8,14,.52);backdrop-filter:blur(8px);opacity:0;transition:.2s ease}.mobile-menu-sheet.show .mobile-menu-overlay{opacity:1}
-      .mobile-menu-card{position:absolute;left:10px;right:10px;bottom:84px;border-radius:30px 30px 24px 24px;background:linear-gradient(180deg,rgba(15,25,42,.96),rgba(8,14,24,.96));border:1px solid rgba(255,255,255,.14);box-shadow:0 28px 80px rgba(0,0,0,.42);padding:14px;transform:translateY(18px) scale(.98);opacity:0;transition:.22s ease}.mobile-menu-sheet.show .mobile-menu-card{transform:translateY(0) scale(1);opacity:1}
-      .mobile-menu-handle{width:46px;height:5px;border-radius:999px;background:rgba(255,255,255,.22);margin:2px auto 10px}.mobile-menu-title{font-size:15px;font-weight:950;color:#fff6e6;margin-bottom:12px;text-align:center}.mobile-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mobile-menu-item{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:22px;padding:14px 12px;color:#fff;text-align:left}.mobile-menu-item strong{display:block;font-size:14px;margin-top:8px}.mobile-menu-item small{display:block;color:rgba(255,255,255,.6);font-size:11px;line-height:1.35;margin-top:4px}.mobile-menu-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(108,255,154,.22),rgba(80,215,255,.2),rgba(255,79,139,.22));font-size:18px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+      .mobile-section{display:none!important}
+      .mobile-section.mobile-active{display:block!important;animation:mobileTabIn .28s ease both}
+      .hero.mobile-section.mobile-active{display:grid!important}
+      .stats.mobile-section.mobile-active{display:grid!important}
+      .mobile-section.active[data-mobile="home"]{display:block!important}
+      .hero.mobile-section.active[data-mobile="home"]{display:grid!important}
+      .stats.mobile-section.active[data-mobile="home"]{display:grid!important}
+      .layout{display:block}
+      .hero{margin-bottom:12px}
+      .section{margin-bottom:12px}
+      .activity-list{max-height:none}
+      .mobile-menu-sheet{position:fixed;inset:0;z-index:930;pointer-events:none}
+      .mobile-menu-sheet.show{display:block;pointer-events:auto}
+      .mobile-menu-overlay{position:absolute;inset:0;background:rgba(4,8,14,.52);backdrop-filter:blur(8px);opacity:0;transition:.2s ease}
+      .mobile-menu-sheet.show .mobile-menu-overlay{opacity:1}
+      .mobile-menu-card{
+        position:absolute;left:10px;right:10px;bottom:84px;
+        border-radius:30px 30px 24px 24px;
+        background:linear-gradient(180deg,rgba(15,25,42,.96),rgba(8,14,24,.96));
+        border:1px solid rgba(255,255,255,.14);box-shadow:0 28px 80px rgba(0,0,0,.42);
+        padding:14px;transform:translateY(18px) scale(.98);opacity:0;transition:.22s ease
+      }
+      .mobile-menu-sheet.show .mobile-menu-card{transform:translateY(0) scale(1);opacity:1}
+      .mobile-menu-handle{width:46px;height:5px;border-radius:999px;background:rgba(255,255,255,.22);margin:2px auto 10px}
+      .mobile-menu-title{font-size:15px;font-weight:950;color:#fff6e6;margin-bottom:12px;text-align:center}
+      .mobile-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      .mobile-menu-item{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:22px;padding:14px 12px;color:#fff;text-align:left}
+      .mobile-menu-item strong{display:block;font-size:14px;margin-top:8px}
+      .mobile-menu-item small{display:block;color:rgba(255,255,255,.6);font-size:11px;line-height:1.35;margin-top:4px}
+      .mobile-menu-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(108,255,154,.22),rgba(80,215,255,.2),rgba(255,79,139,.22));font-size:18px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
       @keyframes mobileTabIn{from{opacity:0;transform:translateY(14px) scale(.985);filter:blur(5px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
     }
 
@@ -312,6 +354,55 @@
   </div>
 </div>
 
+
+<nav class="mobile-tabs" aria-label="Mobil menü">
+  <button class="mobile-tab active" data-tab="home" onclick="switchMobileTab('home')">
+    <span class="mobile-icon">⌂</span><span>Özet</span>
+  </button>
+  <button class="mobile-tab" data-tab="people" onclick="switchMobileTab('people')">
+    <span class="mobile-icon">◉</span><span>Kişiler</span>
+  </button>
+  <button class="mobile-tab" data-tab="list" onclick="switchMobileTab('list')">
+    <span class="mobile-icon">▣</span><span>Liste</span>
+  </button>
+  <button class="mobile-tab" data-tab="missing" onclick="switchMobileTab('missing')">
+    <span class="mobile-icon">⚑</span><span>Eksik</span>
+  </button>
+  <button class="mobile-tab menu-trigger" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+    <span class="mobile-icon">☰</span><span>Menü</span>
+  </button>
+</nav>
+
+<div class="mobile-menu-sheet" id="mobileMenuSheet">
+  <div class="mobile-menu-overlay" onclick="toggleMobileMenu(false)"></div>
+  <div class="mobile-menu-card">
+    <div class="mobile-menu-handle"></div>
+    <div class="mobile-menu-title">Diğer Bölümler</div>
+    <div class="mobile-menu-grid">
+      <button class="mobile-menu-item" onclick="openMobileQuick('notes')">
+        <span class="mobile-menu-icon">✎</span>
+        <strong>Notlar</strong>
+        <small>Ortak notlar ve WhatsApp paylaşım</small>
+      </button>
+      <button class="mobile-menu-item" onclick="openMobileQuick('more')">
+        <span class="mobile-menu-icon">◎</span>
+        <strong>Harcama</strong>
+        <small>Ortak harcama ve kişi başı</small>
+      </button>
+      <button class="mobile-menu-item" onclick="openMobileQuick('more')">
+        <span class="mobile-menu-icon">↺</span>
+        <strong>Değişiklikler</strong>
+        <small>Kim ne yaptı geçmişi</small>
+      </button>
+      <button class="mobile-menu-item" onclick="openMobileQuick('notes')">
+        <span class="mobile-menu-icon">✉</span>
+        <strong>Paylaşım</strong>
+        <small>Hazır WhatsApp mesajı</small>
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast">Kaydedildi</div>
 
 <script>
@@ -474,9 +565,9 @@ function toggleMobileMenu(force){
   const sheet=document.getElementById("mobileMenuSheet");
   const btn=document.getElementById("mobileMenuBtn");
   if(!sheet||!btn) return;
-  const show=typeof force==='boolean'?force:!sheet.classList.contains('show');
-  sheet.classList.toggle('show',show);
-  btn.classList.toggle('menu-open',show);
+  const show=typeof force==="boolean"?force:!sheet.classList.contains("show");
+  sheet.classList.toggle("show",show);
+  btn.classList.toggle("menu-open",show);
 }
 function openMobileQuick(tab){
   toggleMobileMenu(false);
@@ -489,7 +580,7 @@ window.addEventListener("resize",()=>{
   }
 });
 
-function setupRealtime(){client.channel("akya-v8-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderPending();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderCritical();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_last_day_checks"},async()=>{await loadLastChecks();renderLastDay()}).subscribe()}
+function setupRealtime(){client.channel("akya-v8-fixed-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderPending();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderCritical();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_last_day_checks"},async()=>{await loadLastChecks();renderLastDay()}).subscribe()}
 </script>
 </body>
 </html>
