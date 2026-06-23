@@ -120,6 +120,30 @@
     .copy-success.show{display:block;animation:cardPop .28s ease both}
 
 
+
+    .mobile-tab{overflow:visible}
+    .mobile-icon,.mobile-menu-icon{
+      position:relative;
+      isolation:isolate;
+    }
+    .mobile-icon:before,.mobile-menu-icon:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:inherit;
+      z-index:-1;
+      opacity:.0;
+      transform:scale(.88);
+      transition:.22s ease;
+      filter:blur(10px);
+    }
+    .mobile-tab.active .mobile-icon:before,
+    .mobile-tab.menu-open .mobile-icon:before,
+    .mobile-menu-item:hover .mobile-menu-icon:before{
+      opacity:.95;
+      transform:scale(1);
+    }
+
     .mobile-tabs,.mobile-menu-sheet{display:none}
     @media(max-width:760px){
       body{padding-bottom:98px}
@@ -138,14 +162,32 @@
       }
       .mobile-tab span:last-child{font-size:10px;line-height:1}
       .mobile-icon{
-        font-size:18px;line-height:1;display:grid;place-items:center;
-        width:26px;height:26px;border-radius:10px;background:rgba(255,255,255,.08)
+        font-size:17px;line-height:1;display:grid;place-items:center;
+        width:32px;height:32px;border-radius:12px;
+        background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06));
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 20px rgba(0,0,0,.22);
+        transition:.22s ease;
+        animation:mobileIconFloat 3s ease-in-out infinite;
       }
+      .mobile-tab:nth-child(1) .mobile-icon{background:linear-gradient(135deg,rgba(108,255,154,.28),rgba(80,215,255,.18))}
+      .mobile-tab:nth-child(1) .mobile-icon:before{background:linear-gradient(135deg,rgba(108,255,154,.65),rgba(80,215,255,.55))}
+      .mobile-tab:nth-child(2) .mobile-icon{background:linear-gradient(135deg,rgba(255,206,99,.28),rgba(255,138,53,.18))}
+      .mobile-tab:nth-child(2) .mobile-icon:before{background:linear-gradient(135deg,rgba(255,206,99,.65),rgba(255,138,53,.55))}
+      .mobile-tab:nth-child(3) .mobile-icon{background:linear-gradient(135deg,rgba(80,215,255,.28),rgba(255,79,139,.18))}
+      .mobile-tab:nth-child(3) .mobile-icon:before{background:linear-gradient(135deg,rgba(80,215,255,.65),rgba(255,79,139,.55))}
+      .mobile-tab:nth-child(4) .mobile-icon{background:linear-gradient(135deg,rgba(255,79,139,.28),rgba(255,206,99,.18))}
+      .mobile-tab:nth-child(4) .mobile-icon:before{background:linear-gradient(135deg,rgba(255,79,139,.65),rgba(255,206,99,.55))}
+      .mobile-tab:nth-child(5) .mobile-icon{background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(108,255,154,.18))}
+      .mobile-tab:nth-child(5) .mobile-icon:before{background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(108,255,154,.55))}
       .mobile-tab.active,.mobile-tab.menu-open{
-        background:linear-gradient(135deg,var(--neon),var(--aqua));
-        color:#07110d;box-shadow:0 0 24px rgba(108,255,154,.24)
+        background:linear-gradient(135deg,rgba(108,255,154,.92),rgba(80,215,255,.92));
+        color:#07110d;box-shadow:0 0 24px rgba(108,255,154,.24),0 12px 30px rgba(0,0,0,.22)
       }
-      .mobile-tab.active .mobile-icon,.mobile-tab.menu-open .mobile-icon{background:rgba(7,17,13,.12)}
+      .mobile-tab.active .mobile-icon,.mobile-tab.menu-open .mobile-icon{
+        transform:translateY(-2px) scale(1.06);
+        box-shadow:0 0 0 4px rgba(255,255,255,.18),0 12px 22px rgba(0,0,0,.2);
+        animation:mobileIconPulse 1.8s ease-in-out infinite;
+      }
       .mobile-section{display:none!important}
       .mobile-section.mobile-active{display:block!important;animation:mobileTabIn .28s ease both}
       .hero.mobile-section.mobile-active{display:grid!important}
@@ -172,11 +214,31 @@
       .mobile-menu-handle{width:46px;height:5px;border-radius:999px;background:rgba(255,255,255,.22);margin:2px auto 10px}
       .mobile-menu-title{font-size:15px;font-weight:950;color:#fff6e6;margin-bottom:12px;text-align:center}
       .mobile-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-      .mobile-menu-item{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:22px;padding:14px 12px;color:#fff;text-align:left}
+      .mobile-menu-item{
+        border:1px solid rgba(255,255,255,.12);
+        background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.04));
+        border-radius:22px;padding:14px 12px;color:#fff;text-align:left;
+        transition:.22s ease;box-shadow:0 12px 24px rgba(0,0,0,.18)
+      }
+      .mobile-menu-item:hover{transform:translateY(-3px);border-color:rgba(108,255,154,.26);box-shadow:0 18px 34px rgba(0,0,0,.24)}
       .mobile-menu-item strong{display:block;font-size:14px;margin-top:8px}
       .mobile-menu-item small{display:block;color:rgba(255,255,255,.6);font-size:11px;line-height:1.35;margin-top:4px}
-      .mobile-menu-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(108,255,154,.22),rgba(80,215,255,.2),rgba(255,79,139,.22));font-size:18px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+      .mobile-menu-icon{
+        width:46px;height:46px;border-radius:15px;display:grid;place-items:center;
+        background:linear-gradient(135deg,rgba(108,255,154,.28),rgba(80,215,255,.22),rgba(255,79,139,.26));
+        font-size:20px;box-shadow:0 10px 24px rgba(0,0,0,.18);
+        animation:mobileIconFloat 3.4s ease-in-out infinite
+      }
+      .mobile-menu-item:nth-child(2) .mobile-menu-icon{animation-delay:.35s}
+      .mobile-menu-item:nth-child(3) .mobile-menu-icon{animation-delay:.7s}
+      .mobile-menu-item:nth-child(4) .mobile-menu-icon{animation-delay:1.05s}
+      .mobile-menu-item:nth-child(1) .mobile-menu-icon:before{background:linear-gradient(135deg,rgba(108,255,154,.7),rgba(80,215,255,.6))}
+      .mobile-menu-item:nth-child(2) .mobile-menu-icon:before{background:linear-gradient(135deg,rgba(255,206,99,.7),rgba(255,138,53,.6))}
+      .mobile-menu-item:nth-child(3) .mobile-menu-icon:before{background:linear-gradient(135deg,rgba(80,215,255,.7),rgba(255,79,139,.6))}
+      .mobile-menu-item:nth-child(4) .mobile-menu-icon:before{background:linear-gradient(135deg,rgba(255,79,139,.7),rgba(108,255,154,.6))}
       @keyframes mobileTabIn{from{opacity:0;transform:translateY(14px) scale(.985);filter:blur(5px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+      @keyframes mobileIconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+      @keyframes mobileIconPulse{0%,100%{box-shadow:0 0 0 4px rgba(255,255,255,.18),0 12px 22px rgba(0,0,0,.2)}50%{box-shadow:0 0 0 6px rgba(255,255,255,.24),0 14px 26px rgba(0,0,0,.24),0 0 24px rgba(108,255,154,.32)}}
     }
 
     @media(max-width:1060px){.hero,.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:780px){.participants,.need-panel{grid-template-columns:1fr}.board-controls,.board-controls-2,.check-controls,.expense-form,.expense-summary{grid-template-columns:1fr}.section-head{flex-direction:column}.pill{white-space:normal}.shared-add,.expense-add,.add-note,.loc-actions{grid-template-columns:1fr}.btn{width:100%}}@media(max-width:560px){.wrap{padding:15px 13px 38px}.hero-main,.hero-side,.section{border-radius:26px;padding:15px}h1{letter-spacing:-2px}.hero-desc{font-size:16px}.stats{gap:10px}.stat{padding:14px;border-radius:22px}.side-big{font-size:29px}.chip{font-size:13px;padding:10px 12px}.toast{max-width:92%;text-align:center}}
@@ -357,19 +419,19 @@
 
 <nav class="mobile-tabs" aria-label="Mobil menü">
   <button class="mobile-tab active" data-tab="home" onclick="switchMobileTab('home')">
-    <span class="mobile-icon">⌂</span><span>Özet</span>
+    <span class="mobile-icon">🏕️</span><span>Özet</span>
   </button>
   <button class="mobile-tab" data-tab="people" onclick="switchMobileTab('people')">
-    <span class="mobile-icon">◉</span><span>Kişiler</span>
+    <span class="mobile-icon">👥</span><span>Kişiler</span>
   </button>
   <button class="mobile-tab" data-tab="list" onclick="switchMobileTab('list')">
-    <span class="mobile-icon">▣</span><span>Liste</span>
+    <span class="mobile-icon">🛒</span><span>Liste</span>
   </button>
   <button class="mobile-tab" data-tab="missing" onclick="switchMobileTab('missing')">
-    <span class="mobile-icon">⚑</span><span>Eksik</span>
+    <span class="mobile-icon">⚡</span><span>Eksik</span>
   </button>
   <button class="mobile-tab menu-trigger" id="mobileMenuBtn" onclick="toggleMobileMenu()">
-    <span class="mobile-icon">☰</span><span>Menü</span>
+    <span class="mobile-icon">✨</span><span>Menü</span>
   </button>
 </nav>
 
@@ -380,22 +442,22 @@
     <div class="mobile-menu-title">Diğer Bölümler</div>
     <div class="mobile-menu-grid">
       <button class="mobile-menu-item" onclick="openMobileQuick('notes')">
-        <span class="mobile-menu-icon">✎</span>
+        <span class="mobile-menu-icon">📝</span>
         <strong>Notlar</strong>
         <small>Ortak notlar ve WhatsApp paylaşım</small>
       </button>
       <button class="mobile-menu-item" onclick="openMobileQuick('more')">
-        <span class="mobile-menu-icon">◎</span>
+        <span class="mobile-menu-icon">💸</span>
         <strong>Harcama</strong>
         <small>Ortak harcama ve kişi başı</small>
       </button>
       <button class="mobile-menu-item" onclick="openMobileQuick('more')">
-        <span class="mobile-menu-icon">↺</span>
+        <span class="mobile-menu-icon">🕘</span>
         <strong>Değişiklikler</strong>
         <small>Kim ne yaptı geçmişi</small>
       </button>
       <button class="mobile-menu-item" onclick="openMobileQuick('notes')">
-        <span class="mobile-menu-icon">✉</span>
+        <span class="mobile-menu-icon">📤</span>
         <strong>Paylaşım</strong>
         <small>Hazır WhatsApp mesajı</small>
       </button>
