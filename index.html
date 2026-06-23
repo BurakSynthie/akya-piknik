@@ -119,6 +119,24 @@
     .copy-success{font-size:12px;color:#d9ffe5;font-weight:900;display:none}
     .copy-success.show{display:block;animation:cardPop .28s ease both}
 
+
+    .mobile-tabs,.mobile-menu-sheet{display:none}
+    @media(max-width:760px){
+      body{padding-bottom:96px}
+      .wrap{padding-bottom:110px}
+      .mobile-tabs{position:fixed;left:10px;right:10px;bottom:10px;z-index:900;display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:8px;border-radius:28px;background:rgba(5,10,18,.76);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.38)}
+      .mobile-tab{border:0;border-radius:19px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.78);font-weight:900;padding:8px 4px;display:grid;gap:3px;place-items:center;transition:.18s ease}
+      .mobile-tab span:last-child{font-size:10px;line-height:1}.mobile-icon{font-size:18px;line-height:1;display:grid;place-items:center;width:26px;height:26px;border-radius:10px;background:rgba(255,255,255,.08)}
+      .mobile-tab.active,.mobile-tab.menu-open{background:linear-gradient(135deg,var(--neon),var(--aqua));color:#07110d;box-shadow:0 0 24px rgba(108,255,154,.24)}
+      .mobile-tab.active .mobile-icon,.mobile-tab.menu-open .mobile-icon{background:rgba(7,17,13,.12)}
+      .mobile-section{display:none!important}.mobile-section.mobile-active{display:block!important;animation:mobileTabIn .28s ease both}.hero.mobile-section.mobile-active{display:grid!important}.stats.mobile-section.mobile-active{display:grid!important}.mobile-section.active[data-mobile="home"]{display:block!important}.hero.mobile-section.active[data-mobile="home"]{display:grid!important}.stats.mobile-section.active[data-mobile="home"]{display:grid!important}
+      .layout{display:block}.hero{margin-bottom:12px}.section{margin-bottom:12px}.activity-list{max-height:none}
+      .mobile-menu-sheet{position:fixed;inset:0;z-index:930;pointer-events:none}.mobile-menu-sheet.show{display:block;pointer-events:auto}.mobile-menu-overlay{position:absolute;inset:0;background:rgba(4,8,14,.52);backdrop-filter:blur(8px);opacity:0;transition:.2s ease}.mobile-menu-sheet.show .mobile-menu-overlay{opacity:1}
+      .mobile-menu-card{position:absolute;left:10px;right:10px;bottom:84px;border-radius:30px 30px 24px 24px;background:linear-gradient(180deg,rgba(15,25,42,.96),rgba(8,14,24,.96));border:1px solid rgba(255,255,255,.14);box-shadow:0 28px 80px rgba(0,0,0,.42);padding:14px;transform:translateY(18px) scale(.98);opacity:0;transition:.22s ease}.mobile-menu-sheet.show .mobile-menu-card{transform:translateY(0) scale(1);opacity:1}
+      .mobile-menu-handle{width:46px;height:5px;border-radius:999px;background:rgba(255,255,255,.22);margin:2px auto 10px}.mobile-menu-title{font-size:15px;font-weight:950;color:#fff6e6;margin-bottom:12px;text-align:center}.mobile-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mobile-menu-item{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:22px;padding:14px 12px;color:#fff;text-align:left}.mobile-menu-item strong{display:block;font-size:14px;margin-top:8px}.mobile-menu-item small{display:block;color:rgba(255,255,255,.6);font-size:11px;line-height:1.35;margin-top:4px}.mobile-menu-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(108,255,154,.22),rgba(80,215,255,.2),rgba(255,79,139,.22));font-size:18px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+      @keyframes mobileTabIn{from{opacity:0;transform:translateY(14px) scale(.985);filter:blur(5px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+    }
+
     @media(max-width:1060px){.hero,.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:780px){.participants,.need-panel{grid-template-columns:1fr}.board-controls,.board-controls-2,.check-controls,.expense-form,.expense-summary{grid-template-columns:1fr}.section-head{flex-direction:column}.pill{white-space:normal}.shared-add,.expense-add,.add-note,.loc-actions{grid-template-columns:1fr}.btn{width:100%}}@media(max-width:560px){.wrap{padding:15px 13px 38px}.hero-main,.hero-side,.section{border-radius:26px;padding:15px}h1{letter-spacing:-2px}.hero-desc{font-size:16px}.stats{gap:10px}.stat{padding:14px;border-radius:22px}.side-big{font-size:29px}.chip{font-size:13px;padding:10px 12px}.toast{max-width:92%;text-align:center}}
   </style>
 </head>
@@ -131,7 +149,7 @@
 <div class="intro" id="intro"><div class="intro-card"><div class="intro-icon">🌿🔥</div><h1>Akya Promosyon<br>Şirket Pikniği</h1><p>Canlı premium panel açılıyor</p><div class="loader"><span></span></div></div></div>
 
 <main class="wrap">
-  <section class="hero">
+  <section class="hero mobile-section active" data-mobile="home">
     <div class="hero-main glass">
       <div class="badge">✨ Akya Promosyon Ekibi</div>
       <h1>Şirket <span class="grad">Pikniği</span></h1>
@@ -158,7 +176,7 @@
     </aside>
   </section>
 
-  <section class="stats">
+  <section class="stats mobile-section active" data-mobile="home">
     <div class="stat glass"><small>Tarih</small><strong>27 Haziran 2026</strong></div>
     <div class="stat glass"><small>Saat</small><strong>09:00</strong></div>
     <div class="stat glass"><small>Yer</small><strong id="locationStat">Yükleniyor...</strong></div>
@@ -167,7 +185,7 @@
 
   <div class="layout">
     <section>
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="people">
         <div class="section-head">
           <div><div class="section-title">Kim Ne Getirecek?</div><div class="section-sub">Her kişi/çift birden fazla not ekleyebilir. Not yazılınca yeni boş alan otomatik kalır.</div></div>
           <div class="pill" id="participantSummary">Yükleniyor...</div>
@@ -175,7 +193,7 @@
         <div class="participants" id="participants"></div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="list">
         <div class="section-head">
           <div><div class="section-title">Alınacaklar Listesi</div><div class="section-sub">Madde, kategori, miktar, birim, detay, sorumlu ve durum birlikte tutulur.</div></div>
           <div class="pill" id="checkSummary">Yükleniyor...</div>
@@ -207,7 +225,7 @@
     </section>
 
     <aside>
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="missing">
         <div class="section-head">
           <div><div class="section-title">Akıllı Eksikler</div><div class="section-sub">Eksik maddeler artık kategori, miktar ve sorumluyla gösterilir.</div></div>
           <div class="pill" id="missingCount">0 eksik</div>
@@ -215,7 +233,7 @@
         <div class="missing-grid" id="missingList"></div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="missing">
         <div class="section-head">
           <div><div class="section-title">Kritik Eksikler</div><div class="section-sub">Piknik günü unutulmaması gereken önemli eksikler.</div></div>
           <div class="pill" id="criticalCount">0 kritik</div>
@@ -223,7 +241,7 @@
         <div class="critical-list" id="criticalList"></div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="missing">
         <div class="section-head">
           <div><div class="section-title">Henüz Yazmayanlar</div><div class="section-sub">Kendi kartına hiç not eklemeyen kişi/çiftler.</div></div>
           <div class="pill" id="pendingCount">0 kişi</div>
@@ -231,7 +249,7 @@
         <div class="pending-list" id="pendingList"></div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="missing">
         <div class="section-head">
           <div><div class="section-title">Son Gün Kontrol</div><div class="section-sub">Piknikten önce son hızlı kontrol listesi.</div></div>
           <div class="pill" id="lastDayCount">0/0</div>
@@ -239,7 +257,7 @@
         <div class="lastday-list" id="lastDayList"></div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="notes">
         <div class="section-head">
           <div><div class="section-title">WhatsApp Paylaş</div><div class="section-sub">Gruba göndermek için mesajı tek tıkla kopyala.</div></div>
         </div>
@@ -250,13 +268,13 @@
         </div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="notes">
         <div class="section-head"><div><div class="section-title">Ortak Notlar</div><div class="section-sub">Piknik notlarını siz ekleyip pasife alabilirsiniz.</div></div></div>
         <div class="shared-add"><textarea id="sharedNoteInput" placeholder="Ortak not ekle..."></textarea><button class="btn primary" onclick="addSharedNote()">Not Ekle</button></div>
         <div class="shared-list" id="sharedNotes"></div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="more">
         <div class="section-head"><div><div class="section-title">Ortak Harcama</div><div class="section-sub">Kim ne ödedi, toplam ve kişi başı ne kadar oldu?</div></div></div>
         <div class="expense-summary"><div class="money"><small>Toplam</small><strong id="totalExpense">0 TL</strong></div><div class="money"><small>Kişi başı</small><strong id="perPerson">0 TL</strong></div></div>
         <div class="expense-form"><input id="expenseTitle" placeholder="Harcama: Et, içecek..." /><input id="expenseAmount" placeholder="Tutar TL" /></div>
@@ -264,7 +282,7 @@
         <div class="expense-list" id="expenses"></div>
       </div>
 
-      <div class="section glass">
+      <div class="section glass mobile-section" data-mobile="more">
         <div class="section-head">
           <div>
             <div class="section-title">Son Değişiklikler</div>
@@ -437,7 +455,41 @@ function renderExpenses(){const total=expenses.reduce((s,e)=>s+(Number(e.amount)
 async function addExpense(){const title=document.getElementById("expenseTitle").value.trim(),amount=Number(String(document.getElementById("expenseAmount").value).replace(",", "."))||0,paid_by=document.getElementById("expensePaidBy").value.trim();if(!title||!amount)return toast("Harcama ve tutar yazmalısın");const actor=await askActor("Harcamayı kim kaydediyor?",`${title} harcaması eklenecek.`);if(!actor)return;const {error}=await client.from("picnic_expenses").insert({title,amount,paid_by,actor,is_active:true});if(error)return toast("Harcama eklenemedi");await logActivity(actor,"Harcama ekledi",`${title} • ${money(amount)} • ${paid_by||"Ödeyen yazılmadı"}`,"Ortak Harcama");["expenseTitle","expenseAmount","expensePaidBy"].forEach(id=>document.getElementById(id).value="");toast("Harcama eklendi");await Promise.all([loadExpenses(),loadActivities()]);renderExpenses();renderActivities()}
 async function archiveExpense(id){const exp=expenses.find(x=>x.id===id);const actor=await askActor("Harcamayı kim pasife alıyor?","Bu işlem son değişikliklerde görünecek.");if(!actor)return;const {error}=await client.from("picnic_expenses").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");await logActivity(actor,"Harcamayı pasife aldı",`${exp?.title||""} • ${money(exp?.amount||0)}`,"Ortak Harcama");toast("Pasife alındı");await Promise.all([loadExpenses(),loadActivities()]);renderExpenses();renderActivities()}
 async function saveLocation(){const actor=await askActor("Konumu kim güncelliyor?","Yer bilgisi değiştirilecek.");if(!actor)return;const rows=[{key:"location",value:document.getElementById("locationInput").value.trim()||"Henüz belli değil"},{key:"maps_url",value:document.getElementById("mapsInput").value.trim()},{key:"meeting_point",value:document.getElementById("meetingInput").value.trim()},{key:"entrance_fee",value:document.getElementById("feeInput").value.trim()}].map(x=>({...x,updated_at:new Date().toISOString()}));const {error}=await client.from("picnic_settings").upsert(rows,{onConflict:"key"});if(error)return toast("Konum kaydedilemedi");await logActivity(actor,"Konum güncelledi",rows.map(r=>`${r.key}: ${r.value}`).join(" • "),"Konum");toast("Konum güncellendi");await Promise.all([loadSettings(),loadActivities()]);renderSettings();renderActivities()}
-function setupRealtime(){client.channel("akya-v6-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderPending();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderCritical();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_last_day_checks"},async()=>{await loadLastChecks();renderLastDay()}).subscribe()}
+
+function switchMobileTab(tab){
+  document.querySelectorAll(".mobile-tab[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  document.querySelectorAll(".mobile-section").forEach(s=>{
+    const isActive=s.dataset.mobile===tab;
+    s.classList.toggle("mobile-active",isActive);
+    if(tab!=="home") s.classList.remove("active");
+    if(tab==="home" && s.dataset.mobile==="home") s.classList.add("active");
+  });
+  const menuBtn=document.getElementById("mobileMenuBtn");
+  if(menuBtn) menuBtn.classList.remove("menu-open");
+  const sheet=document.getElementById("mobileMenuSheet");
+  if(sheet) sheet.classList.remove("show");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function toggleMobileMenu(force){
+  const sheet=document.getElementById("mobileMenuSheet");
+  const btn=document.getElementById("mobileMenuBtn");
+  if(!sheet||!btn) return;
+  const show=typeof force==='boolean'?force:!sheet.classList.contains('show');
+  sheet.classList.toggle('show',show);
+  btn.classList.toggle('menu-open',show);
+}
+function openMobileQuick(tab){
+  toggleMobileMenu(false);
+  switchMobileTab(tab);
+}
+window.addEventListener("resize",()=>{
+  if(window.innerWidth>760){
+    document.querySelectorAll(".mobile-section").forEach(s=>s.classList.remove("mobile-active"));
+    toggleMobileMenu(false);
+  }
+});
+
+function setupRealtime(){client.channel("akya-v8-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderPending();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderCritical();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_last_day_checks"},async()=>{await loadLastChecks();renderLastDay()}).subscribe()}
 </script>
 </body>
 </html>
