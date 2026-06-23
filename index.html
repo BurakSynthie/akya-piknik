@@ -145,6 +145,90 @@
     }
 
 
+
+    .hero-location-live{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      position:relative;
+      z-index:2;
+    }
+    .hero-loc-item,.hero-map-link{
+      min-height:76px;
+      padding:13px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.055));
+      box-shadow:0 16px 36px rgba(0,0,0,.18);
+      backdrop-filter:blur(12px);
+      transition:.22s ease;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-loc-item:before,.hero-map-link:before{
+      content:"";
+      position:absolute;
+      inset:-50%;
+      background:linear-gradient(115deg,transparent,rgba(255,255,255,.18),transparent);
+      transform:translateX(-70%) rotate(12deg);
+      transition:.55s ease;
+    }
+    .hero-loc-item:hover,.hero-map-link:hover{
+      transform:translateY(-4px);
+      border-color:rgba(108,255,154,.34);
+      box-shadow:0 22px 50px rgba(0,0,0,.26),0 0 26px rgba(108,255,154,.12);
+    }
+    .hero-loc-item:hover:before,.hero-map-link:hover:before{transform:translateX(70%) rotate(12deg)}
+    .hero-loc-item{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .hero-loc-item>span{
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,rgba(108,255,154,.24),rgba(80,215,255,.18));
+      box-shadow:0 10px 22px rgba(0,0,0,.2);
+      flex:0 0 auto;
+    }
+    .hero-loc-item small{
+      display:block;
+      font-size:11px;
+      color:rgba(255,255,255,.58);
+      font-weight:850;
+      margin-bottom:4px;
+    }
+    .hero-loc-item strong{
+      display:block;
+      color:#fff8e8;
+      font-size:13px;
+      line-height:1.25;
+      word-break:break-word;
+    }
+    .hero-map-link{
+      display:none;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#07110d;
+      text-decoration:none;
+      font-weight:950;
+      background:linear-gradient(135deg,var(--neon),var(--aqua));
+    }
+    .hero-map-link.show{display:flex}
+    .location-card .loc-grid{display:grid;gap:10px}
+    @media(max-width:900px){
+      .hero-location-live{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:520px){
+      .hero-location-live{grid-template-columns:1fr}
+      .hero-loc-item,.hero-map-link{min-height:68px}
+    }
+
     .note-item.received{
       background:linear-gradient(135deg,rgba(108,255,154,.26),rgba(255,255,255,.94))!important;
       border-color:rgba(32,199,106,.52)!important;
@@ -284,6 +368,21 @@
       <p class="hero-desc">Kim ne getirecek, kaç adet/litre alınacak, eksik kalanlar, ortak notlar, konum detayları ve bütçe tek panelde güncellenir.</p>
       <div class="hero-chips">
         <div class="chip">📅 27.06.2026</div><div class="chip">⏰ 09:00</div><div class="chip">📍 <span id="locationChip">Yükleniyor...</span></div><div class="chip">👥 13 kişi</div><div class="chip">📱 Mobil uyumlu</div>
+      </div>
+      <div class="hero-location-live" id="heroLocationLive">
+        <div class="hero-loc-item">
+          <span>📍</span>
+          <div><small>Yer adı</small><strong id="heroLocationName">Henüz belli değil</strong></div>
+        </div>
+        <div class="hero-loc-item">
+          <span>🧭</span>
+          <div><small>Buluşma noktası</small><strong id="heroMeetingPoint">Henüz yazılmadı</strong></div>
+        </div>
+        <div class="hero-loc-item">
+          <span>🎫</span>
+          <div><small>Giriş / otopark</small><strong id="heroEntranceFee">Henüz yazılmadı</strong></div>
+        </div>
+        <a id="heroMapsButton" class="hero-map-link" target="_blank" rel="noopener">🗺️ Haritada Aç</a>
       </div>
     </div>
     <aside class="hero-side glass">
@@ -564,9 +663,13 @@ async function loadExpenses(){const {data}=await client.from("picnic_expenses").
 async function loadActivities(){const {data,error}=await client.from("picnic_activity_log").select("*").order("created_at",{ascending:false}).limit(18);if(error){activities=[];return}activities=data||[]}
 async function loadLastChecks(){const {data,error}=await client.from("picnic_last_day_checks").select("*").order("created_at",{ascending:true});if(error){lastChecks=[];return}lastChecks=(data||[]).filter(x=>x.is_active!==false)}
 function renderAll(){renderSettings();renderParticipants();renderItems();renderMissing();renderCritical();renderPending();renderLastDay();renderShared();renderExpenses();renderActivities();renderStatus()}
-function renderSettings(){const loc=settings.location||"Henüz belli değil";document.getElementById("locationChip").textContent=loc;document.getElementById("locationStat").textContent=loc;document.getElementById("locationInput").value=loc==="Henüz belli değil"?"":loc;document.getElementById("mapsInput").value=settings.maps_url||"";document.getElementById("meetingInput").value=settings.meeting_point||"";document.getElementById("feeInput").value=settings.entrance_fee||"";
+function renderSettings(){const loc=settings.location||"Henüz belli değil";const maps=settings.maps_url||"";const meeting=settings.meeting_point||"";const fee=settings.entrance_fee||"";document.getElementById("locationChip").textContent=loc;document.getElementById("locationStat").textContent=loc;document.getElementById("locationInput").value=loc==="Henüz belli değil"?"":loc;document.getElementById("mapsInput").value=maps;document.getElementById("meetingInput").value=meeting;document.getElementById("feeInput").value=fee;
+document.getElementById("heroLocationName").textContent=loc;
+document.getElementById("heroMeetingPoint").textContent=meeting||"Henüz yazılmadı";
+document.getElementById("heroEntranceFee").textContent=fee||"Henüz yazılmadı";
 const mb=document.getElementById("mapsButton");
-if(settings.maps_url){mb.href=settings.maps_url;mb.classList.add("show")}else{mb.removeAttribute("href");mb.classList.remove("show")}
+const hmb=document.getElementById("heroMapsButton");
+if(maps){mb.href=maps;mb.classList.add("show");hmb.href=maps;hmb.classList.add("show")}else{mb.removeAttribute("href");mb.classList.remove("show");hmb.removeAttribute("href");hmb.classList.remove("show")}
 }
 function renderStatus(){const filled=new Set(pNotes.map(n=>n.participant_name)).size;const miss=items.filter(i=>i.is_active!==false&&i.status==="Eksik").length;document.getElementById("quickStatus").textContent=`${filled}/${participants.length} kişi • ${miss} eksik`;document.getElementById("missingStat").textContent=miss}
 function renderParticipants(){const by={};pNotes.forEach(n=>(by[n.participant_name]||=[]).push(n));const filled=participants.filter(p=>(by[p.name]||[]).length).length;document.getElementById("participantSummary").textContent=`${filled}/${participants.length} kişi veya çift not girdi`;document.getElementById("participants").innerHTML=participants.map(p=>{const notes=by[p.name]||[];const doneCount=notes.filter(n=>n.is_done).length;return `<div class="person-card"><div class="person-top"><div class="person-name-wrap"><div class="avatar">${esc(initials(p.name))}</div><div><div class="person-name">${esc(p.name)}</div><div class="person-type">${p.type==="couple"?"Çift":"Tek katılımcı"}</div></div></div><div class="meta ${notes.length&&doneCount===notes.length?"done":notes.length?"warn":""}">${notes.length?doneCount+"/"+notes.length+" alındı":"Bekliyor"}</div></div><div class="notes-list">${notes.length?notes.map(n=>`<div class="note-item ${n.is_done?"received":""}"><div><p>${esc(n.note_text)}</p>${n.actor?`<span class="actor-mini">✍️ ${esc(n.actor)}</span>`:""}${n.done_by?`<span class="actor-mini">✅ ${esc(n.done_by)} ${n.is_done?"aldı":"geri aldı"}</span>`:""}</div><div class="note-actions"><button class="btn ${n.is_done?"ghost":"primary"} tiny" onclick="togglePNoteDone('${n.id}',${n.is_done?"false":"true"})">${n.is_done?"Geri Al":"Alındı"}</button><button class="btn ghost tiny" onclick="archivePNote('${n.id}')">Pasif</button></div></div>`).join(""):`<div class="empty-card">Henüz bir şey yazılmadı.</div>`}</div><div class="add-note"><textarea id="pn-${p.id}" placeholder="${notes.length?"Yeni not ekle...":"Ne getireceksiniz?"}"></textarea><button class="btn primary" onclick="addPNote('${esc(p.name)}','${p.id}')">Ekle</button></div></div>`}).join("")}
@@ -667,7 +770,7 @@ window.addEventListener("resize",()=>{
   }
 });
 
-function setupRealtime(){client.channel("akya-v10-note-done-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderPending();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderCritical();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_last_day_checks"},async()=>{await loadLastChecks();renderLastDay()}).subscribe()}
+function setupRealtime(){client.channel("akya-v11-location-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderPending();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderCritical();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_activity_log"},async()=>{await loadActivities();renderActivities()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_last_day_checks"},async()=>{await loadLastChecks();renderLastDay()}).subscribe()}
 </script>
 </body>
 </html>
