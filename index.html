@@ -8,364 +8,223 @@
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg0:#06110d;--bg1:#0b1f16;--bg2:#123522;--panel:rgba(255,255,255,.075);--panel2:rgba(255,255,255,.11);
-      --border:rgba(255,255,255,.14);--line:rgba(255,255,255,.09);--cream:#fff4dd;--cream2:#f8dfac;
-      --paper:#fff9ee;--paper2:#fff0d2;--ink:#1f2a23;--muted:#6a746c;--green:#2e8f59;--green2:#67c184;
-      --orange:#ef8f31;--orange2:#ffc06b;--red:#de5147;--yellow:#f3ca61;--blue:#65b7ff;
-      --shadow:0 24px 70px rgba(0,0,0,.33);--r32:32px;--r24:24px;--r18:18px
+      --bg:#070b16;--bg2:#101c34;--bg3:#123927;
+      --neon:#6cff9a;--mint:#52f0b8;--aqua:#50d7ff;--sun:#ffce63;--orange:#ff8a35;--pink:#ff4f8b;--red:#ff4f4f;
+      --cream:#fff5df;--paper:#fffaf0;--paper2:#fff0cc;--ink:#1e2930;--muted:#6d7480;
+      --glass:rgba(255,255,255,.095);--glass2:rgba(255,255,255,.14);--border:rgba(255,255,255,.16);
+      --shadow:0 28px 90px rgba(0,0,0,.38);--r36:36px;--r28:28px;--r20:20px;--r16:16px
     }
     body{
-      font-family:Inter,Arial,Helvetica,sans-serif;min-height:100vh;color:#fff;background:
-      radial-gradient(circle at 8% 0%,rgba(103,193,132,.25),transparent 28%),
-      radial-gradient(circle at 92% 8%,rgba(239,143,49,.18),transparent 25%),
-      radial-gradient(circle at 50% 105%,rgba(255,192,107,.13),transparent 32%),
-      linear-gradient(140deg,var(--bg0),var(--bg1) 46%,var(--bg2));
-      overflow-x:hidden
+      min-height:100vh;color:#fff;font-family:Inter,Arial,Helvetica,sans-serif;overflow-x:hidden;
+      background:
+        radial-gradient(circle at 10% 4%,rgba(108,255,154,.28),transparent 26%),
+        radial-gradient(circle at 86% 8%,rgba(255,79,139,.24),transparent 24%),
+        radial-gradient(circle at 80% 88%,rgba(255,206,99,.2),transparent 30%),
+        radial-gradient(circle at 22% 86%,rgba(80,215,255,.16),transparent 28%),
+        linear-gradient(135deg,var(--bg),var(--bg2) 55%,var(--bg3));
     }
     body:before{
-      content:"";position:fixed;inset:0;pointer-events:none;opacity:.34;z-index:0;
-      background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
-      background-size:48px 48px;mask-image:linear-gradient(to bottom,#000,transparent 82%)
+      content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+      background-size:46px 46px;
+      mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.55) 55%,transparent 100%);
     }
-    .orb{position:fixed;width:360px;height:360px;border-radius:50%;filter:blur(85px);opacity:.2;z-index:0;pointer-events:none}
-    .orb.o1{top:-110px;left:-120px;background:#67c184}.orb.o2{top:120px;right:-140px;background:#ef8f31}.orb.o3{bottom:-160px;left:34%;background:#f3ca61;opacity:.12}
-    .intro{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at center,rgba(103,193,132,.22),transparent 31%),linear-gradient(140deg,#05100b,#10291b 70%,#153522);transition:.8s ease}
-    .intro.hide{opacity:0;visibility:hidden}
-    .intro-card{text-align:center;padding:38px 26px;animation:introIn .9s ease}
-    .intro-icon{font-size:58px;margin-bottom:16px;animation:floaty 2.4s ease-in-out infinite}
-    .intro h1{font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacing:-1.8px;margin-bottom:12px}
-    .intro p{color:#f8dfac;font-size:16px;margin-bottom:24px}
-    .intro-loader{width:180px;height:7px;border-radius:999px;background:rgba(255,255,255,.14);margin:auto;overflow:hidden}.intro-loader span{display:block;height:100%;width:44%;border-radius:999px;background:linear-gradient(90deg,var(--orange),var(--yellow));animation:loading 1.25s ease-in-out infinite}
-    @keyframes introIn{from{transform:scale(.96) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}@keyframes loading{0%{transform:translateX(-120%)}100%{transform:translateX(260%)}}
-    .wrap{position:relative;z-index:1;width:min(1220px,100%);margin:auto;padding:26px 22px 46px}
-    .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:stretch;margin-bottom:18px}
-    .hero-main,.glass{background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.065));border:1px solid var(--border);box-shadow:var(--shadow);backdrop-filter:blur(18px);border-radius:var(--r32)}
-    .hero-main{padding:28px;position:relative;overflow:hidden}.hero-main:after{content:"";position:absolute;right:-70px;top:-80px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,192,107,.22),transparent 64%)}
-    .badge{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.105);border:1px solid var(--border);color:var(--cream2);font-size:14px;margin-bottom:18px}
-    h1{font-size:clamp(44px,7vw,82px);line-height:.92;letter-spacing:-3.2px;margin-bottom:18px}.soft{color:var(--cream2)}
-    .hero-desc{max-width:780px;color:rgba(255,255,255,.76);font-size:18px;line-height:1.55}
-    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.chip{padding:11px 14px;border-radius:999px;background:rgba(255,255,255,.095);border:1px solid var(--border);color:#fff6e6;font-size:14px}
-    .hero-side{padding:20px;display:grid;gap:14px}.side-title{color:rgba(255,255,255,.62);font-size:13px}.side-big{font-size:34px;font-weight:900;letter-spacing:-1.2px;color:#fff6e6}.mini{display:grid;gap:8px}.mini-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}.mini-row:last-child{border-bottom:0}.mini-row span{color:rgba(255,255,255,.62)}.mini-row strong{text-align:right;color:#fff6e6}
-    .quick-edit{background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:22px;padding:12px}.quick-edit label{font-size:12px;color:rgba(255,255,255,.62);display:block;margin-bottom:8px}.quick-edit .row{display:grid;grid-template-columns:1fr auto;gap:8px}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.stat{padding:18px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.07));border:1px solid var(--border);box-shadow:var(--shadow);backdrop-filter:blur(16px)}.stat small{display:block;color:rgba(255,255,255,.6);font-size:13px;margin-bottom:8px}.stat strong{font-size:19px;color:#fff6e6}
-    .layout{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}.section{padding:18px;border-radius:var(--r32);background:linear-gradient(180deg,rgba(255,255,255,.095),rgba(255,255,255,.06));border:1px solid var(--border);box-shadow:var(--shadow);backdrop-filter:blur(18px);margin-bottom:18px}
-    .section-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:16px}.section-title{font-size:25px;letter-spacing:-.9px;font-weight:900}.section-sub{color:rgba(255,255,255,.63);font-size:14px;line-height:1.45;margin-top:4px}.pill{border-radius:999px;padding:10px 13px;background:rgba(255,244,221,.12);border:1px solid rgba(255,244,221,.14);color:#ffefd1;font-size:13px;white-space:nowrap}
-    .participants{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.person-card{position:relative;overflow:hidden;border-radius:28px;padding:16px;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);box-shadow:0 18px 34px rgba(0,0,0,.17);border:1px solid rgba(255,255,255,.48)}
-    .person-card:before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--green2),var(--orange2))}
-    .person-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin:6px 0 12px}.avatar{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#2e8f59,#ef8f31);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 10px 20px rgba(0,0,0,.15)}
-    .person-name-wrap{display:flex;gap:10px;align-items:center}.person-name{font-size:19px;font-weight:900;letter-spacing:-.45px}.meta{font-size:12px;font-weight:900;border-radius:999px;padding:7px 10px;background:#ead7b2;color:#6a5129}.meta.done{background:#d9f1df;color:#27683a}
-    .notes-list{display:grid;gap:8px;margin:10px 0}.note-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start;background:rgba(255,255,255,.55);border:1px solid rgba(120,90,40,.1);border-radius:16px;padding:10px 10px 10px 12px}.note-item p{line-height:1.45;font-size:14px;color:#253027;white-space:pre-wrap}.empty-card{background:rgba(255,255,255,.45);border:1px dashed rgba(90,70,35,.22);border-radius:16px;padding:12px;color:#736a5e;font-size:14px;text-align:center}
-    .add-note{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
-    input,textarea,select{width:100%;border:1px solid #dcc9a3;border-radius:16px;padding:13px 14px;background:rgba(255,255,255,.78);color:var(--ink);font:inherit;outline:none}textarea{resize:vertical;min-height:80px;line-height:1.45}input:focus,textarea:focus,select:focus{border-color:var(--green2);box-shadow:0 0 0 4px rgba(103,193,132,.15);background:#fffdf8}
-    .btn{border:0;border-radius:16px;padding:12px 15px;font:inherit;font-weight:900;cursor:pointer;transition:.16s ease;white-space:nowrap}.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.98)}.primary{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}.orange{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff}.danger{background:linear-gradient(135deg,var(--red),#ff7a5f);color:#fff}.ghost{background:rgba(31,42,35,.09);color:#2b3a30}.tiny{padding:8px 10px;border-radius:12px;font-size:12px}
-    .board-controls{display:grid;grid-template-columns:1.1fr .75fr .75fr auto;gap:9px;margin-bottom:14px}.checklist{display:grid;gap:11px}.check-card{background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);border-radius:24px;padding:14px;border:1px solid rgba(255,255,255,.5);box-shadow:0 16px 30px rgba(0,0,0,.15)}
-    .check-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}.check-name{font-weight:900;font-size:17px;letter-spacing:-.35px}.check-sub{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}.tag{font-size:12px;border-radius:999px;padding:6px 9px;background:rgba(31,42,35,.08);font-weight:800;color:#536056}.status{font-size:12px;border-radius:999px;padding:7px 10px;font-weight:900}.status.eksik{background:#ffe3de;color:#a93128}.status.alinacak{background:#fff1c9;color:#815e07}.status.alindi{background:#d9f1df;color:#27683a}
-    .check-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:8px}.missing-grid{display:grid;gap:10px}.missing-card{padding:14px;border-radius:22px;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);box-shadow:0 16px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.48);border-left:6px solid var(--red)}.missing-card strong{display:block;font-size:16px;margin-bottom:7px}.missing-card small{color:var(--muted);font-weight:800}
-    .shared-add{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px}.shared-list{display:grid;gap:10px}.shared-note{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding:14px;border-radius:22px;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);box-shadow:0 16px 30px rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.48)}.shared-note p{white-space:pre-wrap;line-height:1.45}.shared-note small{display:block;margin-top:8px;color:var(--muted);font-size:12px;font-weight:800}
-    .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(24px);opacity:0;pointer-events:none;background:#fff8eb;color:var(--ink);padding:12px 16px;border-radius:999px;box-shadow:var(--shadow);font-weight:900;transition:.25s ease;z-index:1000}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    .footer{text-align:center;color:rgba(255,255,255,.52);font-size:13px;padding:8px 0 28px}.empty{border-radius:20px;padding:16px;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.18);color:rgba(255,255,255,.74);text-align:center;line-height:1.45}
-    @media(max-width:980px){.hero,.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.participants{grid-template-columns:1fr}.board-controls{grid-template-columns:1fr}.check-controls{grid-template-columns:1fr}.quick-edit .row,.shared-add,.add-note{grid-template-columns:1fr}.section-head{flex-direction:column}.pill{white-space:normal}}@media(max-width:560px){.wrap{padding:16px 14px 38px}.hero-main,.hero-side,.section{border-radius:25px;padding:15px}h1{letter-spacing:-2px}.stats{gap:10px}.stat{padding:14px;border-radius:20px}.side-big{font-size:29px}.btn{width:100%}.hero-actions{gap:8px}.chip{font-size:13px;padding:10px 12px}}
+    body:after{
+      content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.45;
+      background:radial-gradient(circle at center,transparent 0%,rgba(0,0,0,.35) 100%);
+    }
+    .orb{position:fixed;border-radius:50%;filter:blur(85px);z-index:0;pointer-events:none;animation:pulse 6s ease-in-out infinite}
+    .o1{width:360px;height:360px;background:#6cff9a;top:-130px;left:-120px;opacity:.22}.o2{width:420px;height:420px;background:#ff4f8b;top:80px;right:-170px;opacity:.2;animation-delay:1s}.o3{width:370px;height:370px;background:#50d7ff;bottom:-160px;left:18%;opacity:.14;animation-delay:2s}.o4{width:280px;height:280px;background:#ffce63;bottom:80px;right:12%;opacity:.13;animation-delay:3s}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+    .intro{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,rgba(108,255,154,.25),transparent 32%),linear-gradient(135deg,#050914,#0d1b32 55%,#103322);transition:.75s ease}
+    .intro.hide{opacity:0;visibility:hidden}.intro-card{text-align:center;padding:32px;animation:introIn .9s ease}.intro-icon{font-size:62px;margin-bottom:17px;animation:float 2.4s ease-in-out infinite}.intro h1{font-size:clamp(34px,6vw,58px);line-height:.96;letter-spacing:-2px;margin-bottom:12px}.intro p{color:#fff0c2;margin-bottom:22px}.loader{width:190px;height:8px;background:rgba(255,255,255,.14);border-radius:999px;margin:auto;overflow:hidden}.loader span{display:block;width:44%;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--neon),var(--sun),var(--pink));animation:loading 1.25s ease-in-out infinite}
+    @keyframes introIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}@keyframes float{50%{transform:translateY(-9px)}}@keyframes loading{from{transform:translateX(-120%)}to{transform:translateX(260%)}}
+    .wrap{position:relative;z-index:1;width:min(1260px,100%);margin:auto;padding:26px 22px 48px}
+    .glass{background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.07));border:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:var(--shadow)}
+    .hero{display:grid;grid-template-columns:1.28fr .72fr;gap:18px;margin-bottom:18px}.hero-main{border-radius:var(--r36);padding:30px;position:relative;overflow:hidden}.hero-main:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(120deg,rgba(108,255,154,.55),rgba(80,215,255,.25),rgba(255,79,139,.45),rgba(255,206,99,.38));mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none}.badge{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:10px 14px;border-radius:999px;color:#fff0c8;margin-bottom:18px;font-size:14px}
+    h1{font-size:clamp(46px,7.4vw,88px);line-height:.9;letter-spacing:-3.6px;margin-bottom:18px}.grad{background:linear-gradient(90deg,#fff4dc,var(--sun),var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent}.hero-desc{max-width:800px;color:rgba(255,255,255,.78);font-size:18px;line-height:1.55}.hero-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.chip{padding:11px 14px;border-radius:999px;background:rgba(255,255,255,.105);border:1px solid rgba(255,255,255,.15);color:#fff7e7;font-size:14px}
+    .hero-side{border-radius:var(--r36);padding:20px;display:grid;gap:14px}.side-title{color:rgba(255,255,255,.62);font-size:13px}.side-big{font-size:34px;font-weight:950;letter-spacing:-1.4px;color:#fff7e7}.mini{display:grid;gap:8px}.mini-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,255,255,.1);padding:9px 0;font-size:14px}.mini-row:last-child{border-bottom:0}.mini-row span{color:rgba(255,255,255,.64)}.mini-row strong{color:#fff7e7;text-align:right}
+    .location-card{padding:14px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}.location-card label{font-size:12px;color:rgba(255,255,255,.64);display:block;margin-bottom:8px}.loc-grid{display:grid;gap:8px}.loc-actions{display:grid;grid-template-columns:1fr auto;gap:8px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.stat{padding:18px;border-radius:26px}.stat small{display:block;color:rgba(255,255,255,.62);font-size:13px;margin-bottom:8px}.stat strong{font-size:19px;color:#fff7e7}.stat b{color:var(--neon)}
+    .layout{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}.section{border-radius:var(--r36);padding:18px;margin-bottom:18px}.section-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:16px}.section-title{font-size:26px;letter-spacing:-1px;font-weight:950}.section-sub{color:rgba(255,255,255,.66);font-size:14px;line-height:1.45;margin-top:4px}.pill{border-radius:999px;padding:10px 13px;background:rgba(255,245,223,.12);border:1px solid rgba(255,245,223,.16);color:#fff0cc;font-size:13px;white-space:nowrap}
+    input,textarea,select{width:100%;border:1px solid #dfc996;border-radius:17px;padding:13px 14px;background:rgba(255,255,255,.83);color:var(--ink);font:inherit;outline:none}textarea{resize:vertical;min-height:86px;line-height:1.45}input:focus,textarea:focus,select:focus{border-color:var(--neon);box-shadow:0 0 0 4px rgba(108,255,154,.16);background:#fffdf7}
+    .btn{border:0;border-radius:17px;padding:12px 15px;font:inherit;font-weight:950;cursor:pointer;white-space:nowrap;transition:.16s ease}.btn:hover{transform:translateY(-1px);filter:brightness(1.04)}.btn:active{transform:scale(.98)}.primary{background:linear-gradient(135deg,#27b768,var(--neon));color:#082014}.orange{background:linear-gradient(135deg,var(--orange),var(--sun));color:#241306}.pink{background:linear-gradient(135deg,var(--pink),#ff8a35);color:#fff}.ghost{background:rgba(31,41,48,.09);color:#263238}.danger{background:linear-gradient(135deg,#ff4f4f,#ff8a65);color:#fff}.tiny{font-size:12px;padding:8px 10px;border-radius:13px}
+    .participants{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.person-card{position:relative;overflow:hidden;border-radius:30px;padding:16px;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);box-shadow:0 18px 38px rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.54)}.person-card:before{content:"";position:absolute;inset:0 0 auto 0;height:7px;background:linear-gradient(90deg,var(--neon),var(--aqua),var(--pink),var(--sun))}
+    .person-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin:7px 0 12px}.person-name-wrap{display:flex;gap:11px;align-items:center}.avatar{width:44px;height:44px;border-radius:17px;background:linear-gradient(135deg,var(--neon),var(--aqua),var(--pink));display:grid;place-items:center;color:#fff;font-weight:950;box-shadow:0 12px 24px rgba(0,0,0,.18)}.person-name{font-size:19px;font-weight:950;letter-spacing:-.45px}.person-type{font-size:12px;color:#6d776d;font-weight:800;margin-top:3px}.meta{font-size:12px;font-weight:950;border-radius:999px;padding:7px 10px;background:#ead7b2;color:#6a5129}.meta.done{background:#d6f8df;color:#14723b}
+    .notes-list{display:grid;gap:8px;margin:10px 0}.note-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start;background:rgba(255,255,255,.58);border:1px solid rgba(120,90,40,.11);border-radius:17px;padding:10px 10px 10px 12px}.note-item p{line-height:1.45;font-size:14px;white-space:pre-wrap}.empty-card{background:rgba(255,255,255,.44);border:1px dashed rgba(90,70,35,.22);border-radius:17px;padding:12px;color:#736a5e;font-size:14px;text-align:center}.add-note{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+    .need-panel{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}.need{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:22px;padding:13px}.need small{display:block;color:rgba(255,255,255,.62);font-size:12px;margin-bottom:5px}.need strong{color:#fff6e6;font-size:15px}
+    .board-controls{display:grid;grid-template-columns:1.1fr .72fr .55fr .55fr;gap:9px;margin-bottom:9px}.board-controls-2{display:grid;grid-template-columns:1fr .75fr auto;gap:9px;margin-bottom:14px}.checklist{display:grid;gap:11px}.category-title{display:flex;align-items:center;gap:10px;color:#fff2cf;margin:12px 0 5px;font-weight:950;letter-spacing:-.3px}.cat-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--sun))}
+    .check-card{position:relative;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);border-radius:26px;padding:15px;border:1px solid rgba(255,255,255,.55);box-shadow:0 16px 34px rgba(0,0,0,.16);overflow:hidden}.check-card.critical:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--red)}.check-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}.check-name{font-size:18px;font-weight:950;letter-spacing:-.4px}.check-detail{color:#58645d;line-height:1.45;margin-top:7px;font-size:14px;white-space:pre-wrap}.check-sub{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.tag{font-size:12px;border-radius:999px;padding:6px 9px;background:rgba(31,42,35,.08);font-weight:900;color:#536056}.status{font-size:12px;border-radius:999px;padding:7px 10px;font-weight:950}.status.eksik{background:#ffe1dc;color:#a93128}.status.alinacak{background:#fff0c2;color:#815e07}.status.alindi{background:#d6f8df;color:#14723b}
+    .check-controls{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;margin-top:10px}.missing-grid{display:grid;gap:10px}.missing-card{padding:14px;border-radius:24px;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);box-shadow:0 16px 34px rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.55);border-left:7px solid var(--red)}.missing-card strong{display:block;font-size:16px;margin-bottom:7px}.missing-card small{display:block;color:var(--muted);font-weight:850;line-height:1.45}
+    .shared-add,.expense-add{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px}.shared-list,.expense-list{display:grid;gap:10px}.shared-note,.expense-card{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;padding:14px;border-radius:24px;background:linear-gradient(180deg,var(--paper),var(--paper2));color:var(--ink);box-shadow:0 16px 34px rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.55)}.shared-note p,.expense-card p{white-space:pre-wrap;line-height:1.45}.shared-note small,.expense-card small{display:block;margin-top:8px;color:var(--muted);font-size:12px;font-weight:850}
+    .expense-form{display:grid;grid-template-columns:1fr .65fr;gap:8px;margin-bottom:8px}.expense-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.money{padding:13px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13)}.money small{display:block;color:rgba(255,255,255,.62);margin-bottom:5px}.money strong{font-size:20px;color:#fff6e6}
+    .archive-toggle{margin-top:12px}.archived-list{display:none;margin-top:10px}.archived-list.show{display:grid;gap:9px}.archived-card{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px;border-radius:20px;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.17);color:rgba(255,255,255,.78)}
+    .empty{border-radius:22px;padding:16px;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.18);color:rgba(255,255,255,.75);text-align:center;line-height:1.45}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(24px);opacity:0;pointer-events:none;background:#fff8eb;color:var(--ink);padding:12px 16px;border-radius:999px;box-shadow:var(--shadow);font-weight:950;transition:.25s ease;z-index:1000}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.footer{text-align:center;color:rgba(255,255,255,.54);font-size:13px;padding:8px 0 28px}
+    @media(max-width:1060px){.hero,.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:780px){.participants,.need-panel{grid-template-columns:1fr}.board-controls,.board-controls-2,.check-controls,.expense-form,.expense-summary{grid-template-columns:1fr}.section-head{flex-direction:column}.pill{white-space:normal}.shared-add,.expense-add,.add-note,.loc-actions{grid-template-columns:1fr}.btn{width:100%}}@media(max-width:560px){.wrap{padding:15px 13px 38px}.hero-main,.hero-side,.section{border-radius:26px;padding:15px}h1{letter-spacing:-2px}.hero-desc{font-size:16px}.stats{gap:10px}.stat{padding:14px;border-radius:22px}.side-big{font-size:29px}.chip{font-size:13px;padding:10px 12px}.toast{max-width:92%;text-align:center}}
   </style>
 </head>
 <body>
-  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-  <div class="intro" id="intro"><div class="intro-card"><div class="intro-icon">🌿🔥</div><h1>Akya Promosyon<br>Şirket Pikniği</h1><p>Hazırlık paneli açılıyor</p><div class="intro-loader"><span></span></div></div></div>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div>
+<div class="intro" id="intro"><div class="intro-card"><div class="intro-icon">🌿🔥</div><h1>Akya Promosyon<br>Şirket Pikniği</h1><p>Premium hazırlık paneli açılıyor</p><div class="loader"><span></span></div></div></div>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="hero-main">
-        <div class="badge">🌿 Akya Promosyon Ekibi</div>
-        <h1>Şirket <span class="soft">Pikniği</span></h1>
-        <p class="hero-desc">Kim ne getirecek, genel alınacaklar, eksik kalanlar, ortak notlar ve piknik yeri tek ekranda güncellenebilir.</p>
-        <div class="hero-actions">
-          <div class="chip">📅 27.06.2026</div>
-          <div class="chip">⏰ 09:00</div>
-          <div class="chip">📍 <span id="locationChip">Yükleniyor...</span></div>
-          <div class="chip">👥 13 kişi</div>
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-main glass">
+      <div class="badge">✨ Akya Promosyon Ekibi</div>
+      <h1>Şirket <span class="grad">Pikniği</span></h1>
+      <p class="hero-desc">Kim ne getirecek, kaç adet/litre alınacak, eksik kalanlar, ortak notlar, konum detayları ve bütçe tek panelde güncellenir.</p>
+      <div class="hero-chips">
+        <div class="chip">📅 27.06.2026</div><div class="chip">⏰ 09:00</div><div class="chip">📍 <span id="locationChip">Yükleniyor...</span></div><div class="chip">👥 13 kişi</div><div class="chip">📱 Mobil uyumlu</div>
+      </div>
+    </div>
+    <aside class="hero-side glass">
+      <div><div class="side-title">Canlı Durum</div><div class="side-big" id="quickStatus">Yükleniyor...</div></div>
+      <div class="mini">
+        <div class="mini-row"><span>Katılımcı</span><strong>13 kişi</strong></div><div class="mini-row"><span>Çift</span><strong>5 çift</strong></div><div class="mini-row"><span>Tek katılımcı</span><strong>3 kişi</strong></div><div class="mini-row"><span>Silme sistemi</span><strong>Pasife alma</strong></div>
+      </div>
+      <div class="location-card">
+        <label>Yer belli olunca buradan güncelle</label>
+        <div class="loc-grid">
+          <input id="locationInput" placeholder="Yer adı: Belgrad Ormanı..." />
+          <input id="mapsInput" placeholder="Google Maps linki" />
+          <input id="meetingInput" placeholder="Buluşma noktası / kapı / otopark" />
+          <div class="loc-actions"><input id="feeInput" placeholder="Giriş / otopark ücreti" /><button class="btn orange" onclick="saveLocation()">Kaydet</button></div>
         </div>
       </div>
-      <aside class="hero-side glass">
-        <div><div class="side-title">Piknik Özeti</div><div class="side-big">Hazırlık Paneli</div></div>
-        <div class="mini">
-          <div class="mini-row"><span>Katılımcı</span><strong>13 kişi</strong></div>
-          <div class="mini-row"><span>Çift</span><strong>5 çift</strong></div>
-          <div class="mini-row"><span>Tek katılımcı</span><strong>3 kişi</strong></div>
-          <div class="mini-row"><span>Çocuk</span><strong>Yok</strong></div>
+    </aside>
+  </section>
+
+  <section class="stats">
+    <div class="stat glass"><small>Tarih</small><strong>27 Haziran 2026</strong></div>
+    <div class="stat glass"><small>Saat</small><strong>09:00</strong></div>
+    <div class="stat glass"><small>Yer</small><strong id="locationStat">Yükleniyor...</strong></div>
+    <div class="stat glass"><small>Eksik</small><strong><b id="missingStat">0</b> madde</strong></div>
+  </section>
+
+  <div class="layout">
+    <section>
+      <div class="section glass">
+        <div class="section-head">
+          <div><div class="section-title">Kim Ne Getirecek?</div><div class="section-sub">Her kişi/çift birden fazla not ekleyebilir. Not yazılınca yeni boş alan otomatik kalır.</div></div>
+          <div class="pill" id="participantSummary">Yükleniyor...</div>
         </div>
-        <div class="quick-edit">
-          <label>Piknik yeri belli olunca buradan güncelle</label>
-          <div class="row">
-            <input id="locationInput" placeholder="Örn. Belgrad Ormanı / Kemerburgaz..." />
-            <button class="btn orange" onclick="saveLocation()">Kaydet</button>
-          </div>
+        <div class="participants" id="participants"></div>
+      </div>
+
+      <div class="section glass">
+        <div class="section-head">
+          <div><div class="section-title">Alınacaklar Listesi</div><div class="section-sub">Madde, kategori, miktar, birim, detay, sorumlu ve durum birlikte tutulur.</div></div>
+          <div class="pill" id="checkSummary">Yükleniyor...</div>
         </div>
-      </aside>
+
+        <div class="need-panel">
+          <div class="need"><small>13 kişi için öneri</small><strong>Et/tavuk: 4–5 kg</strong></div>
+          <div class="need"><small>13 kişi için öneri</small><strong>İçecek: 18–25 litre</strong></div>
+          <div class="need"><small>13 kişi için öneri</small><strong>Su: 20–30 litre</strong></div>
+          <div class="need"><small>13 kişi için öneri</small><strong>Kömür: 2 büyük paket</strong></div>
+        </div>
+
+        <div class="board-controls">
+          <input id="newTitle" placeholder="Madde: örn. Kola" />
+          <select id="newCategory"><option>Mangal</option><option>İçecek</option><option>Servis</option><option>Temizlik</option><option>Atıştırmalık</option><option>Genel</option></select>
+          <input id="newAmount" placeholder="Miktar" />
+          <select id="newUnit"><option>adet</option><option>litre</option><option>kg</option><option>paket</option><option>koli</option><option>şişe</option><option>diğer</option></select>
+        </div>
+        <div class="board-controls-2">
+          <input id="newDetails" placeholder="Detay: 2 kola, 2 fanta, 1 ice tea gibi..." />
+          <select id="newImportance"><option>Normal</option><option>Kritik</option></select>
+          <button class="btn orange" onclick="addChecklistItem()">Listeye Ekle</button>
+        </div>
+
+        <div class="checklist" id="checklist"></div>
+        <div class="archive-toggle"><button class="btn ghost" onclick="toggleArchive()">Pasife Alınanları Göster/Gizle</button></div>
+        <div class="archived-list" id="archiveList"></div>
+      </div>
     </section>
 
-    <section class="stats">
-      <div class="stat"><small>Tarih</small><strong>27 Haziran 2026</strong></div>
-      <div class="stat"><small>Saat</small><strong>09:00</strong></div>
-      <div class="stat"><small>Yer</small><strong id="locationStat">Yükleniyor...</strong></div>
-      <div class="stat"><small>Durum</small><strong id="quickStatus">Yükleniyor...</strong></div>
-    </section>
-
-    <div class="layout">
-      <section>
-        <div class="section">
-          <div class="section-head">
-            <div><div class="section-title">Kim Ne Getirecek?</div><div class="section-sub">Her kişi/çift için birden fazla not eklenebilir. İlk not yazılınca yeni not alanı otomatik hazır kalır.</div></div>
-            <div class="pill" id="participantSummary">Yükleniyor...</div>
-          </div>
-          <div class="participants" id="participants"></div>
+    <aside>
+      <div class="section glass">
+        <div class="section-head">
+          <div><div class="section-title">Akıllı Eksikler</div><div class="section-sub">Eksik maddeler artık kategori, miktar ve sorumluyla gösterilir.</div></div>
+          <div class="pill" id="missingCount">0 eksik</div>
         </div>
+        <div class="missing-grid" id="missingList"></div>
+      </div>
 
-        <div class="section">
-          <div class="section-head">
-            <div><div class="section-title">Alınacaklar Listesi</div><div class="section-sub">Kategori, miktar, sorumlu ve durum birlikte takip edilir.</div></div>
-            <div class="pill" id="checkSummary">Yükleniyor...</div>
-          </div>
-          <div class="board-controls">
-            <input id="newItemTitle" placeholder="Madde: örn. Kömür" />
-            <select id="newItemCategory">
-              <option>Genel</option><option>Mangal</option><option>İçecek</option><option>Servis</option><option>Atıştırmalık</option><option>Temizlik</option>
-            </select>
-            <input id="newItemQuantity" placeholder="Miktar: örn. 2 paket" />
-            <button class="btn orange" onclick="addChecklistItem()">Ekle</button>
-          </div>
-          <div class="checklist" id="checklist"></div>
-        </div>
-      </section>
+      <div class="section glass">
+        <div class="section-head"><div><div class="section-title">Ortak Notlar</div><div class="section-sub">Piknik notlarını siz ekleyip pasife alabilirsiniz.</div></div></div>
+        <div class="shared-add"><textarea id="sharedNoteInput" placeholder="Ortak not ekle..."></textarea><button class="btn primary" onclick="addSharedNote()">Not Ekle</button></div>
+        <div class="shared-list" id="sharedNotes"></div>
+      </div>
 
-      <aside>
-        <div class="section">
-          <div class="section-head">
-            <div><div class="section-title">Eksik Kalanlar</div><div class="section-sub">Eksik maddeler kategori ve sorumluyla birlikte görünür.</div></div>
-            <div class="pill" id="missingCount">0 eksik</div>
-          </div>
-          <div class="missing-grid" id="missingList"></div>
-        </div>
+      <div class="section glass">
+        <div class="section-head"><div><div class="section-title">Ortak Harcama</div><div class="section-sub">Kim ne ödedi, toplam ve kişi başı ne kadar oldu?</div></div></div>
+        <div class="expense-summary"><div class="money"><small>Toplam</small><strong id="totalExpense">0 TL</strong></div><div class="money"><small>Kişi başı</small><strong id="perPerson">0 TL</strong></div></div>
+        <div class="expense-form"><input id="expenseTitle" placeholder="Harcama: Et, içecek..." /><input id="expenseAmount" placeholder="Tutar TL" /></div>
+        <div class="expense-add"><input id="expensePaidBy" placeholder="Kim ödedi?" /><button class="btn pink" onclick="addExpense()">Harcama Ekle</button></div>
+        <div class="expense-list" id="expenses"></div>
+      </div>
+    </aside>
+  </div>
 
-        <div class="section">
-          <div class="section-head">
-            <div><div class="section-title">Ortak Notlar</div><div class="section-sub">Piknik notlarını artık siz ekleyip silebilirsiniz.</div></div>
-          </div>
-          <div class="shared-add">
-            <textarea id="sharedNoteInput" placeholder="Ortak not ekle... örn. Herkes kendi sandalyesini getirsin."></textarea>
-            <button class="btn primary" onclick="addSharedNote()">Not Ekle</button>
-          </div>
-          <div class="shared-list" id="sharedNotes"></div>
-        </div>
-      </aside>
-    </div>
-
-    <div class="footer">Akya Promosyon • Premium Piknik Hazırlık Paneli</div>
-  </main>
-  <div class="toast" id="toast">Kaydedildi</div>
+  <div class="footer">Akya Promosyon • Premium Piknik Hazırlık Paneli</div>
+</main>
+<div class="toast" id="toast">Kaydedildi</div>
 
 <script>
 const SUPABASE_URL="https://rejzxwgnrzhvtkszxnee.supabase.co";
 const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlanp4d2ducnpodnRrc3p4bmVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNzA5NjIsImV4cCI6MjA5Nzc0Njk2Mn0.j0M8rotmQ21uDyOVmSGXb5bNxYIXxUPMr2VDaKoi660";
 const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
 const participantOrder=["Burak & Şevval","Görkem & Asiye","Orçun & Burcu","Radiha & Berkay","Umut & Şevin","Muhammet","Hüseyin","Tuğba"];
-const starterParticipants=[
-  {name:"Burak & Şevval",type:"couple",items_text:""},{name:"Görkem & Asiye",type:"couple",items_text:""},
-  {name:"Orçun & Burcu",type:"couple",items_text:""},{name:"Radiha & Berkay",type:"couple",items_text:""},
-  {name:"Umut & Şevin",type:"couple",items_text:""},{name:"Muhammet",type:"single",items_text:""},
-  {name:"Hüseyin",type:"single",items_text:""},{name:"Tuğba",type:"single",items_text:""}
-];
-
-let participantsData=[], participantNotes=[], checklistData=[], sharedNotes=[], settings={};
-
-window.addEventListener("load",async()=>{
-  setTimeout(()=>document.getElementById("intro").classList.add("hide"),1500);
-  await ensureStarterData();
-  await loadAll();
-  setupRealtime();
-});
-
-function showToast(text="Kaydedildi"){const t=document.getElementById("toast");t.textContent=text;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
-function initials(name){return name.split("&").map(x=>x.trim()[0]||"").join("").slice(0,2).toUpperCase()}
+const starterParticipants=[{name:"Burak & Şevval",type:"couple",items_text:""},{name:"Görkem & Asiye",type:"couple",items_text:""},{name:"Orçun & Burcu",type:"couple",items_text:""},{name:"Radiha & Berkay",type:"couple",items_text:""},{name:"Umut & Şevin",type:"couple",items_text:""},{name:"Muhammet",type:"single",items_text:""},{name:"Hüseyin",type:"single",items_text:""},{name:"Tuğba",type:"single",items_text:""}];
+let participants=[],pNotes=[],items=[],shared=[],expenses=[],settings={};
+window.addEventListener("load",async()=>{setTimeout(()=>document.getElementById("intro").classList.add("hide"),1400);await ensureStarterData();await loadAll();setupRealtime()});
+function toast(t="Kaydedildi"){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1700)}
 function esc(v){return String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-function timeText(v){if(!v)return "";try{return new Date(v).toLocaleString("tr-TR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}}
-
+function initials(n){return n.split("&").map(x=>x.trim()[0]||"").join("").slice(0,2).toUpperCase()}
+function money(v){return (Number(v)||0).toLocaleString("tr-TR")+" TL"}
 async function ensureStarterData(){
   await client.from("picnic_participants").upsert(starterParticipants,{onConflict:"name"});
-  await client.from("picnic_settings").upsert([
-    {key:"location",value:"Henüz belli değil"}
-  ],{onConflict:"key"});
-
-  const {data:checks}=await client.from("picnic_checklist").select("id").limit(1);
-  if(!checks || checks.length===0){
-    const starter=[
-      ["Et / tavuk / sucuk","Mangal",""],["Kömür","Mangal",""],["Çıra","Mangal",""],["Mangal teli","Mangal",""],
-      ["Ekmek","Genel",""],["İçecek","İçecek",""],["Su","İçecek",""],["Bardak","Servis",""],["Tabak","Servis",""],
-      ["Çatal / kaşık","Servis",""],["Peçete","Temizlik",""],["Islak mendil","Temizlik",""],["Çöp poşeti","Temizlik",""],
-      ["Masa örtüsü","Genel",""],["Buz","İçecek",""],["Meze / salata","Atıştırmalık",""],["Tatlı","Atıştırmalık",""],["Atıştırmalık","Atıştırmalık",""]
-    ];
-    await client.from("picnic_checklist").insert(starter.map(([title,category,quantity])=>({title,category,quantity,status:"Eksik",responsible:""})));
-  }
-
-  const {data:notes}=await client.from("picnic_shared_notes").select("id").limit(1);
-  if(!notes || notes.length===0){
-    await client.from("picnic_shared_notes").insert([
-      {note_text:"Herkes kendi sandalyesini getirecek."},
-      {note_text:"Mangal var, alkol olacak."},
-      {note_text:"Yer netleşince üstteki alandan güncellenecek."}
-    ]);
+  await client.from("picnic_settings").upsert([{key:"location",value:"Henüz belli değil"},{key:"maps_url",value:""},{key:"meeting_point",value:""},{key:"entrance_fee",value:""}],{onConflict:"key"});
+  const {data:c}=await client.from("picnic_checklist").select("id").limit(1);
+  if(!c||!c.length){
+    const s=[["Et / tavuk / sucuk","Mangal","5","kg","13 kişi için 4-5 kg yeterli olabilir.","Kritik"],["Kömür","Mangal","2","paket","Büyük paket tercih edelim.","Kritik"],["Çıra","Mangal","1","paket","","Normal"],["Mangal teli","Mangal","1","adet","","Kritik"],["Ekmek","Genel","13","adet","","Normal"],["İçecek","İçecek","20","litre","Kola, fanta, ice tea, soda karışık olabilir.","Kritik"],["Su","İçecek","25","litre","","Kritik"],["Bardak","Servis","40","adet","","Normal"],["Tabak","Servis","30","adet","","Normal"],["Çatal / kaşık","Servis","30","adet","","Normal"],["Peçete","Temizlik","2","paket","","Normal"],["Islak mendil","Temizlik","2","paket","","Normal"],["Çöp poşeti","Temizlik","1","rulo","","Kritik"],["Buz","İçecek","3","paket","","Kritik"],["Meze / salata","Atıştırmalık","","","", "Normal"],["Tatlı","Atıştırmalık","","","", "Normal"]];
+    await client.from("picnic_checklist").insert(s.map(([title,category,amount,unit,details,importance])=>({title,category,amount,unit,details,importance,status:"Eksik",responsible:"",is_active:true})));
   }
 }
-
-async function loadAll(){
-  await Promise.all([loadSettings(),loadParticipants(),loadParticipantNotes(),loadChecklist(),loadSharedNotes()]);
-  renderAll();
-}
-async function loadSettings(){
-  const {data,error}=await client.from("picnic_settings").select("*");
-  if(error){console.error(error);return}
-  settings={};(data||[]).forEach(r=>settings[r.key]=r.value);
-}
-async function loadParticipants(){
-  const {data,error}=await client.from("picnic_participants").select("*");
-  if(error){console.error(error);showToast("Katılımcılar yüklenemedi");return}
-  participantsData=(data||[]).sort((a,b)=>{
-    const ai=participantOrder.indexOf(a.name),bi=participantOrder.indexOf(b.name);
-    return (ai===-1?999:ai)-(bi===-1?999:bi)
-  });
-}
-async function loadParticipantNotes(){
-  const {data,error}=await client.from("picnic_participant_notes").select("*").order("created_at",{ascending:true});
-  if(error){console.error(error);return}
-  participantNotes=data||[];
-}
-async function loadChecklist(){
-  const {data,error}=await client.from("picnic_checklist").select("*").order("created_at",{ascending:true});
-  if(error){console.error(error);showToast("Liste yüklenemedi");return}
-  checklistData=data||[];
-}
-async function loadSharedNotes(){
-  const {data,error}=await client.from("picnic_shared_notes").select("*").order("created_at",{ascending:false});
-  if(error){console.error(error);return}
-  sharedNotes=data||[];
-}
-function renderAll(){renderSettings();renderParticipants();renderChecklist();renderMissing();renderSharedNotes();renderStatus();}
-function renderSettings(){
-  const loc=settings.location||"Henüz belli değil";
-  document.getElementById("locationChip").textContent=loc;
-  document.getElementById("locationStat").textContent=loc;
-  document.getElementById("locationInput").value=loc==="Henüz belli değil"?"":loc;
-}
-function renderStatus(){
-  const filledPeople=new Set(participantNotes.filter(n=>(n.note_text||"").trim()).map(n=>n.participant_name)).size;
-  const missing=checklistData.filter(i=>i.status==="Eksik").length;
-  document.getElementById("quickStatus").textContent=`${filledPeople}/${participantsData.length} kişi/çift • ${missing} eksik`;
-}
-function renderParticipants(){
-  const byName={};participantNotes.forEach(n=>{(byName[n.participant_name] ||= []).push(n)});
-  const filled=participantsData.filter(p=>(byName[p.name]||[]).length>0).length;
-  document.getElementById("participantSummary").textContent=`${filled}/${participantsData.length} kişi veya çift not girdi`;
-  document.getElementById("participants").innerHTML=participantsData.map(p=>{
-    const notes=byName[p.name]||[];
-    return `<div class="person-card">
-      <div class="person-top">
-        <div class="person-name-wrap"><div class="avatar">${esc(initials(p.name))}</div><div><div class="person-name">${esc(p.name)}</div><div class="section-sub" style="color:#69766d;margin-top:2px">${p.type==="couple"?"Çift":"Tek katılımcı"}</div></div></div>
-        <div class="meta ${notes.length?"done":""}">${notes.length?notes.length+" not":"Bekleniyor"}</div>
-      </div>
-      <div class="notes-list">
-        ${notes.length?notes.map(n=>`<div class="note-item"><p>${esc(n.note_text)}</p><button class="btn ghost tiny" onclick="deleteParticipantNote('${n.id}')">Sil</button></div>`).join(""):`<div class="empty-card">Henüz bir şey yazılmadı.</div>`}
-      </div>
-      <div class="add-note">
-        <textarea id="note-${p.id}" placeholder="${notes.length?'Yeni not ekle...':'Ne getireceksiniz?'}"></textarea>
-        <button class="btn primary" onclick="addParticipantNote('${esc(p.name)}','${p.id}')">Ekle</button>
-      </div>
-    </div>`
-  }).join("");
-}
-async function addParticipantNote(name,pid){
-  const el=document.getElementById(`note-${pid}`);const text=el.value.trim();
-  if(!text){showToast("Not yazmalısın");return}
-  const {error}=await client.from("picnic_participant_notes").insert({participant_name:name,note_text:text,created_at:new Date().toISOString(),updated_at:new Date().toISOString()});
-  if(error){console.error(error);showToast("Not eklenemedi");return}
-  el.value="";showToast("Not eklendi");await loadParticipantNotes();renderParticipants();renderStatus();
-}
-async function deleteParticipantNote(id){
-  const {error}=await client.from("picnic_participant_notes").delete().eq("id",id);
-  if(error){console.error(error);showToast("Silinemedi");return}
-  showToast("Silindi");await loadParticipantNotes();renderParticipants();renderStatus();
-}
-function statusClass(s){if(s==="Alındı")return"alindi";if(s==="Alınacak")return"alinacak";return"eksik"}
-function renderChecklist(){
-  const missing=checklistData.filter(i=>i.status==="Eksik").length, done=checklistData.filter(i=>i.status==="Alındı").length;
-  document.getElementById("checkSummary").textContent=`${checklistData.length} madde • ${done} alındı • ${missing} eksik`;
-  document.getElementById("checklist").innerHTML=checklistData.length?checklistData.map(item=>{
-    const responsibleOptions=[`<option value="">Sorumlu yok</option>`,...participantsData.map(p=>`<option value="${esc(p.name)}" ${p.name===item.responsible?"selected":""}>${esc(p.name)}</option>`)].join("");
-    return `<div class="check-card">
-      <div class="check-top"><div><div class="check-name">${esc(item.title)}</div><div class="check-sub"><span class="tag">${esc(item.category||"Genel")}</span>${item.quantity?`<span class="tag">${esc(item.quantity)}</span>`:""}<span class="tag">${item.responsible?esc(item.responsible):"Sorumlu yok"}</span></div></div><div class="status ${statusClass(item.status)}">${esc(item.status)}</div></div>
-      <div class="check-controls">
-        <select onchange="updateChecklist('${item.id}','status',this.value)"><option value="Eksik" ${item.status==="Eksik"?"selected":""}>Eksik</option><option value="Alınacak" ${item.status==="Alınacak"?"selected":""}>Alınacak</option><option value="Alındı" ${item.status==="Alındı"?"selected":""}>Alındı</option></select>
-        <select onchange="updateChecklist('${item.id}','responsible',this.value)">${responsibleOptions}</select>
-        <button class="btn danger" onclick="deleteChecklistItem('${item.id}')">Sil</button>
-      </div>
-    </div>`
-  }).join(""):`<div class="empty">Henüz alınacak madde yok.</div>`;
-}
-async function addChecklistItem(){
-  const title=document.getElementById("newItemTitle").value.trim();
-  const category=document.getElementById("newItemCategory").value;
-  const quantity=document.getElementById("newItemQuantity").value.trim();
-  if(!title){showToast("Madde adı yazmalısın");return}
-  const {error}=await client.from("picnic_checklist").insert({title,category,quantity,status:"Eksik",responsible:"",created_at:new Date().toISOString(),updated_at:new Date().toISOString()});
-  if(error){console.error(error);showToast("Madde eklenemedi");return}
-  document.getElementById("newItemTitle").value="";document.getElementById("newItemQuantity").value="";
-  showToast("Madde eklendi");await loadChecklist();renderChecklist();renderMissing();renderStatus();
-}
-async function updateChecklist(id,field,value){
-  const {error}=await client.from("picnic_checklist").update({[field]:value,updated_at:new Date().toISOString()}).eq("id",id);
-  if(error){console.error(error);showToast("Güncellenemedi");return}
-  showToast("Güncellendi");await loadChecklist();renderChecklist();renderMissing();renderStatus();
-}
-async function deleteChecklistItem(id){
-  if(!confirm("Bu madde silinsin mi?"))return;
-  const {error}=await client.from("picnic_checklist").delete().eq("id",id);
-  if(error){console.error(error);showToast("Silinemedi");return}
-  showToast("Silindi");await loadChecklist();renderChecklist();renderMissing();renderStatus();
-}
-function renderMissing(){
-  const missing=checklistData.filter(i=>i.status==="Eksik");
-  document.getElementById("missingCount").textContent=`${missing.length} eksik`;
-  document.getElementById("missingList").innerHTML=missing.length?missing.map(i=>`<div class="missing-card"><strong>${esc(i.title)}</strong><small>${esc(i.category||"Genel")} • ${i.quantity?esc(i.quantity)+" • ":""}${i.responsible?esc(i.responsible):"Sorumlu yok"}</small></div>`).join(""):`<div class="empty">Eksik görünen madde yok. Güzel gidiyor.</div>`;
-}
-function renderSharedNotes(){
-  document.getElementById("sharedNotes").innerHTML=sharedNotes.length?sharedNotes.map(n=>`<div class="shared-note"><div><p>${esc(n.note_text)}</p><small>${timeText(n.created_at)}</small></div><button class="btn ghost tiny" onclick="deleteSharedNote('${n.id}')">Sil</button></div>`).join(""):`<div class="empty">Henüz ortak not yok.</div>`;
-}
-async function addSharedNote(){
-  const el=document.getElementById("sharedNoteInput");const text=el.value.trim();
-  if(!text){showToast("Not yazmalısın");return}
-  const {error}=await client.from("picnic_shared_notes").insert({note_text:text,created_at:new Date().toISOString(),updated_at:new Date().toISOString()});
-  if(error){console.error(error);showToast("Not eklenemedi");return}
-  el.value="";showToast("Ortak not eklendi");await loadSharedNotes();renderSharedNotes();
-}
-async function deleteSharedNote(id){
-  const {error}=await client.from("picnic_shared_notes").delete().eq("id",id);
-  if(error){console.error(error);showToast("Silinemedi");return}
-  showToast("Silindi");await loadSharedNotes();renderSharedNotes();
-}
-async function saveLocation(){
-  const value=document.getElementById("locationInput").value.trim()||"Henüz belli değil";
-  const {error}=await client.from("picnic_settings").upsert({key:"location",value,updated_at:new Date().toISOString()},{onConflict:"key"});
-  if(error){console.error(error);showToast("Yer kaydedilemedi");return}
-  showToast("Yer güncellendi");await loadSettings();renderSettings();
-}
-function setupRealtime(){
-  client.channel("akya-premium-live")
-    .on("postgres_changes",{event:"*",schema:"public",table:"picnic_participants"},async()=>{await loadParticipants();renderParticipants();renderStatus()})
-    .on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadParticipantNotes();renderParticipants();renderStatus()})
-    .on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadChecklist();renderChecklist();renderMissing();renderStatus()})
-    .on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadSharedNotes();renderSharedNotes()})
-    .on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()})
-    .subscribe();
-}
+async function loadAll(){await Promise.all([loadSettings(),loadParticipants(),loadPNotes(),loadItems(),loadShared(),loadExpenses()]);renderAll()}
+async function loadSettings(){const {data}=await client.from("picnic_settings").select("*");settings={};(data||[]).forEach(x=>settings[x.key]=x.value)}
+async function loadParticipants(){const {data}=await client.from("picnic_participants").select("*");participants=(data||[]).sort((a,b)=>{const ai=participantOrder.indexOf(a.name),bi=participantOrder.indexOf(b.name);return(ai<0?999:ai)-(bi<0?999:bi)})}
+async function loadPNotes(){const {data}=await client.from("picnic_participant_notes").select("*").order("created_at",{ascending:true});pNotes=(data||[]).filter(x=>x.is_active!==false)}
+async function loadItems(){const {data}=await client.from("picnic_checklist").select("*").order("created_at",{ascending:true});items=data||[]}
+async function loadShared(){const {data}=await client.from("picnic_shared_notes").select("*").order("created_at",{ascending:false});shared=(data||[]).filter(x=>x.is_active!==false)}
+async function loadExpenses(){const {data}=await client.from("picnic_expenses").select("*").order("created_at",{ascending:false});expenses=(data||[]).filter(x=>x.is_active!==false)}
+function renderAll(){renderSettings();renderParticipants();renderItems();renderMissing();renderShared();renderExpenses();renderStatus()}
+function renderSettings(){const loc=settings.location||"Henüz belli değil";document.getElementById("locationChip").textContent=loc;document.getElementById("locationStat").textContent=loc;document.getElementById("locationInput").value=loc==="Henüz belli değil"?"":loc;document.getElementById("mapsInput").value=settings.maps_url||"";document.getElementById("meetingInput").value=settings.meeting_point||"";document.getElementById("feeInput").value=settings.entrance_fee||""}
+function renderStatus(){const filled=new Set(pNotes.map(n=>n.participant_name)).size;const miss=items.filter(i=>i.is_active!==false&&i.status==="Eksik").length;document.getElementById("quickStatus").textContent=`${filled}/${participants.length} kişi • ${miss} eksik`;document.getElementById("missingStat").textContent=miss}
+function renderParticipants(){const by={};pNotes.forEach(n=>(by[n.participant_name]||=[]).push(n));const filled=participants.filter(p=>(by[p.name]||[]).length).length;document.getElementById("participantSummary").textContent=`${filled}/${participants.length} kişi veya çift not girdi`;document.getElementById("participants").innerHTML=participants.map(p=>{const notes=by[p.name]||[];return `<div class="person-card"><div class="person-top"><div class="person-name-wrap"><div class="avatar">${esc(initials(p.name))}</div><div><div class="person-name">${esc(p.name)}</div><div class="person-type">${p.type==="couple"?"Çift":"Tek katılımcı"}</div></div></div><div class="meta ${notes.length?"done":""}">${notes.length?notes.length+" not":"Bekliyor"}</div></div><div class="notes-list">${notes.length?notes.map(n=>`<div class="note-item"><p>${esc(n.note_text)}</p><button class="btn ghost tiny" onclick="archivePNote('${n.id}')">Pasif</button></div>`).join(""):`<div class="empty-card">Henüz bir şey yazılmadı.</div>`}</div><div class="add-note"><textarea id="pn-${p.id}" placeholder="${notes.length?"Yeni not ekle...":"Ne getireceksiniz?"}"></textarea><button class="btn primary" onclick="addPNote('${esc(p.name)}','${p.id}')">Ekle</button></div></div>`}).join("")}
+async function addPNote(name,id){const el=document.getElementById(`pn-${id}`);const text=el.value.trim();if(!text)return toast("Not yazmalısın");const {error}=await client.from("picnic_participant_notes").insert({participant_name:name,note_text:text,is_active:true});if(error)return toast("Not eklenemedi");el.value="";toast("Not eklendi");await loadPNotes();renderParticipants();renderStatus()}
+async function archivePNote(id){const {error}=await client.from("picnic_participant_notes").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");toast("Pasife alındı");await loadPNotes();renderParticipants();renderStatus()}
+function sClass(s){if(s==="Alındı")return"alindi";if(s==="Alınacak")return"alinacak";return"eksik"}
+function renderItems(){const active=items.filter(i=>i.is_active!==false),arch=items.filter(i=>i.is_active===false);const done=active.filter(i=>i.status==="Alındı").length,miss=active.filter(i=>i.status==="Eksik").length;document.getElementById("checkSummary").textContent=`${active.length} aktif • ${done} alındı • ${miss} eksik`;const cats=[...new Set(active.map(i=>i.category||"Genel"))];document.getElementById("checklist").innerHTML=active.length?cats.map(cat=>`<div class="category-title"><span class="cat-dot"></span>${esc(cat)}</div>`+active.filter(i=>(i.category||"Genel")===cat).map(renderItem).join("")).join(""):`<div class="empty">Aktif madde yok.</div>`;document.getElementById("archiveList").innerHTML=arch.length?arch.map(i=>`<div class="archived-card"><span>${esc(i.title)}</span><button class="btn primary tiny" onclick="restoreItem('${i.id}')">Geri Al</button></div>`).join(""):`<div class="empty">Pasife alınan madde yok.</div>`}
+function renderItem(i){const opts=[`<option value="">Sorumlu yok</option>`,...participants.map(p=>`<option value="${esc(p.name)}" ${p.name===i.responsible?"selected":""}>${esc(p.name)}</option>`)].join("");return `<div class="check-card ${i.importance==="Kritik"?"critical":""}"><div class="check-top"><div><div class="check-name">${esc(i.title)}</div><div class="check-sub"><span class="tag">${esc(i.category||"Genel")}</span>${i.amount?`<span class="tag">${esc(i.amount)} ${esc(i.unit||"")}</span>`:""}<span class="tag">${esc(i.importance||"Normal")}</span><span class="tag">${i.responsible?esc(i.responsible):"Sorumlu yok"}</span></div>${i.details?`<div class="check-detail">${esc(i.details)}</div>`:""}</div><div class="status ${sClass(i.status)}">${esc(i.status)}</div></div><div class="check-controls"><select onchange="updateItem('${i.id}','status',this.value)"><option value="Eksik" ${i.status==="Eksik"?"selected":""}>Eksik</option><option value="Alınacak" ${i.status==="Alınacak"?"selected":""}>Alınacak</option><option value="Alındı" ${i.status==="Alındı"?"selected":""}>Alındı</option></select><select onchange="updateItem('${i.id}','responsible',this.value)">${opts}</select><button class="btn ghost" onclick="editItem('${i.id}')">Detay</button><button class="btn danger" onclick="archiveItem('${i.id}')">Pasif</button></div></div>`}
+async function addChecklistItem(){const title=document.getElementById("newTitle").value.trim();if(!title)return toast("Madde adı yazmalısın");const row={title,category:document.getElementById("newCategory").value,amount:document.getElementById("newAmount").value.trim(),unit:document.getElementById("newUnit").value,details:document.getElementById("newDetails").value.trim(),importance:document.getElementById("newImportance").value,status:"Eksik",responsible:"",is_active:true};const {error}=await client.from("picnic_checklist").insert(row);if(error)return toast("Madde eklenemedi");["newTitle","newAmount","newDetails"].forEach(id=>document.getElementById(id).value="");toast("Madde eklendi");await loadItems();renderItems();renderMissing();renderStatus()}
+async function updateItem(id,field,value){const {error}=await client.from("picnic_checklist").update({[field]:value,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Güncellenemedi");toast("Güncellendi");await loadItems();renderItems();renderMissing();renderStatus()}
+async function editItem(id){const i=items.find(x=>x.id===id);if(!i)return;const amount=prompt("Miktar:",i.amount||"");if(amount===null)return;const unit=prompt("Birim:",i.unit||"");if(unit===null)return;const details=prompt("Detay:",i.details||"");if(details===null)return;const {error}=await client.from("picnic_checklist").update({amount,unit,details,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Detay kaydedilemedi");toast("Detay güncellendi");await loadItems();renderItems();renderMissing()}
+async function archiveItem(id){const {error}=await client.from("picnic_checklist").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");toast("Pasife alındı");await loadItems();renderItems();renderMissing();renderStatus()}
+async function restoreItem(id){const {error}=await client.from("picnic_checklist").update({is_active:true,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Geri alınamadı");toast("Geri alındı");await loadItems();renderItems();renderMissing();renderStatus()}
+function toggleArchive(){document.getElementById("archiveList").classList.toggle("show")}
+function renderMissing(){const miss=items.filter(i=>i.is_active!==false&&i.status==="Eksik");document.getElementById("missingCount").textContent=`${miss.length} eksik`;document.getElementById("missingList").innerHTML=miss.length?miss.map(i=>`<div class="missing-card"><strong>${esc(i.title)}</strong><small>${esc(i.category||"Genel")} • ${i.amount?esc(i.amount)+" "+esc(i.unit||"")+" • ":""}${i.responsible?esc(i.responsible):"Sorumlu yok"}${i.importance==="Kritik"?" • Kritik":""}</small>${i.details?`<small>${esc(i.details)}</small>`:""}</div>`).join(""):`<div class="empty">Eksik görünen madde yok. Güzel gidiyor.</div>`}
+function renderShared(){document.getElementById("sharedNotes").innerHTML=shared.length?shared.map(n=>`<div class="shared-note"><div><p>${esc(n.note_text)}</p><small>Ortak not</small></div><button class="btn ghost tiny" onclick="archiveShared('${n.id}')">Pasif</button></div>`).join(""):`<div class="empty">Henüz ortak not yok.</div>`}
+async function addSharedNote(){const el=document.getElementById("sharedNoteInput");const text=el.value.trim();if(!text)return toast("Not yazmalısın");const {error}=await client.from("picnic_shared_notes").insert({note_text:text,is_active:true});if(error)return toast("Not eklenemedi");el.value="";toast("Not eklendi");await loadShared();renderShared()}
+async function archiveShared(id){const {error}=await client.from("picnic_shared_notes").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");toast("Pasife alındı");await loadShared();renderShared()}
+function renderExpenses(){const total=expenses.reduce((s,e)=>s+(Number(e.amount)||0),0);document.getElementById("totalExpense").textContent=money(total);document.getElementById("perPerson").textContent=money(total/13);document.getElementById("expenses").innerHTML=expenses.length?expenses.map(e=>`<div class="expense-card"><div><p><b>${esc(e.title)}</b> • ${money(e.amount)}</p><small>${e.paid_by?esc(e.paid_by)+" ödedi":"Ödeyen yazılmadı"}</small></div><button class="btn ghost tiny" onclick="archiveExpense('${e.id}')">Pasif</button></div>`).join(""):`<div class="empty">Henüz harcama yok.</div>`}
+async function addExpense(){const title=document.getElementById("expenseTitle").value.trim(),amount=Number(String(document.getElementById("expenseAmount").value).replace(",", "."))||0,paid_by=document.getElementById("expensePaidBy").value.trim();if(!title||!amount)return toast("Harcama ve tutar yazmalısın");const {error}=await client.from("picnic_expenses").insert({title,amount,paid_by,is_active:true});if(error)return toast("Harcama eklenemedi");["expenseTitle","expenseAmount","expensePaidBy"].forEach(id=>document.getElementById(id).value="");toast("Harcama eklendi");await loadExpenses();renderExpenses()}
+async function archiveExpense(id){const {error}=await client.from("picnic_expenses").update({is_active:false,updated_at:new Date().toISOString()}).eq("id",id);if(error)return toast("Pasife alınamadı");toast("Pasife alındı");await loadExpenses();renderExpenses()}
+async function saveLocation(){const rows=[{key:"location",value:document.getElementById("locationInput").value.trim()||"Henüz belli değil"},{key:"maps_url",value:document.getElementById("mapsInput").value.trim()},{key:"meeting_point",value:document.getElementById("meetingInput").value.trim()},{key:"entrance_fee",value:document.getElementById("feeInput").value.trim()}].map(x=>({...x,updated_at:new Date().toISOString()}));const {error}=await client.from("picnic_settings").upsert(rows,{onConflict:"key"});if(error)return toast("Konum kaydedilemedi");toast("Konum güncellendi");await loadSettings();renderSettings()}
+function setupRealtime(){client.channel("akya-v3-live").on("postgres_changes",{event:"*",schema:"public",table:"picnic_participant_notes"},async()=>{await loadPNotes();renderParticipants();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_checklist"},async()=>{await loadItems();renderItems();renderMissing();renderStatus()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_shared_notes"},async()=>{await loadShared();renderShared()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_expenses"},async()=>{await loadExpenses();renderExpenses()}).on("postgres_changes",{event:"*",schema:"public",table:"picnic_settings"},async()=>{await loadSettings();renderSettings()}).subscribe()}
 </script>
 </body>
 </html>
